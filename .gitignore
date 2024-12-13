@@ -1,6 +1,7 @@
 /DATA/
 /docs/
 EXECUTABLE/*
+!EXECUTABLE/.gitkeep
 !EXECUTABLE/
 /include/
 /lib/
