@@ -1,0 +1,40 @@
+# Project: Loopie_predictor
+# Makefile created by Dev-C++ 5.11
+
+CPP      = g++.exe
+CC       = gcc.exe
+WINDRES  = windres.exe
+OBJ      = obj/main.o obj/leagueprocessing.o obj/setcurloptions.o obj/updates.o obj/datadir.o
+LINKOBJ  = obj/main.o obj/leagueprocessing.o obj/setcurloptions.o obj/updates.o obj/datadir.o
+LIBS     = -L"C:/MinGW/lib" -L"C:/MinGW/mingw32/lib" -static-libstdc++ -static-libgcc -L"C:/Users/sloba/OneDrive/Desktop/Loopie_predictor/lib" lib/libbrotlicommon.a lib/libbrotlidec.a lib/libcrypto.a lib/libcurl.a lib/libcurl.dll.a lib/libnghttp2.a lib/libnghttp3.a lib/libngtcp2.a lib/libngtcp2_crypto_quictls.a lib/libpsl.a lib/libssh2.a lib/libssl.a lib/libz.a lib/libzstd.a
+INCS     = -I"C:/MinGW/include" -I"C:/MinGW/lib/gcc/mingw32/6.3.0/include" -I"C:/Users/sloba/OneDrive/Desktop/Loopie_predictor/include"
+CXXINCS  = -I"C:/MinGW/include" -I"C:/MinGW/lib/gcc/mingw32/6.3.0/include" -I"C:/Users/sloba/OneDrive/Desktop/Loopie_predictor/include"
+BIN      = EXECUTABLE/Loopie_predictor.exe
+CXXFLAGS = $(CXXINCS) 
+CFLAGS   = $(INCS) 
+RM       = rm.exe -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CC) $(LINKOBJ) -o $(BIN) $(LIBS)
+
+obj/main.o: main.c
+	$(CC) -c main.c -o obj/main.o $(CFLAGS)
+
+obj/leagueprocessing.o: src/leagueprocessing.c
+	$(CC) -c src/leagueprocessing.c -o obj/leagueprocessing.o $(CFLAGS)
+
+obj/setcurloptions.o: src/setcurloptions.c
+	$(CC) -c src/setcurloptions.c -o obj/setcurloptions.o $(CFLAGS)
+
+obj/updates.o: src/updates.c
+	$(CC) -c src/updates.c -o obj/updates.o $(CFLAGS)
+
+obj/datadir.o: src/datadir.c
+	$(CC) -c src/datadir.c -o obj/datadir.o $(CFLAGS)
