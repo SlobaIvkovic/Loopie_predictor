@@ -1,1 +1,1 @@
-# Loopie_predictor
+Prerequisites download libcurl prebuilt binaries at https://curl.se/download.html. Take include and lib folders and copy them to the project parrent directory. Acquire SSL certificate file and place it inside EXECUTABLE folder and finaly place libcurl.dll inside EXECUTABLE folder.
