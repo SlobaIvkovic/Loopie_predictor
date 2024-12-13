@@ -1,6 +1,7 @@
 /DATA/
 /docs/
-/EXECUTABLE/
+/EXECUTABLE/*
+!EXECUTABLE/
 /include/
 /lib/
 /Notes/
