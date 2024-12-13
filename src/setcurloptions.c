@@ -1,8 +1,9 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-#include "../inc/setcurloptions.h"
 #include "../inc/datastructs.h"
+#include "../inc/setcurloptions.h"
+
 
 int setCurlOptions(CURL *curl, chunk* s)
 {
