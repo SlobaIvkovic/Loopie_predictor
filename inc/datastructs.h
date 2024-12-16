@@ -44,6 +44,15 @@ struct team
 
 typedef struct team team;
 
+struct league
+{
+	char* addr;
+	char* fileName;
+	int   numOfTeams;
+};
+
+typedef struct league league;
+
 struct pair
 {
 	char homeTeam[100];

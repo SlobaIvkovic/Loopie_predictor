@@ -63,6 +63,8 @@ int main(void)
 	team teamsNetherlands1[18];
 	team teamsPortugal1[18];
 	
+	league spain1;
+	
 	CURL *curl;
 	CURLcode res;
   
