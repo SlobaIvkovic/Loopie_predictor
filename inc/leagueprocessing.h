@@ -3,7 +3,8 @@
 
 //#include "datastructs.h"
 
-int processLeague(CURL *curl, chunk* s, int startRound, int endRound, char* addr, team* teams, char* filename, int numTeams);
+//int processLeague(CURL *curl, chunk* s, int startRound, int endRound, char* addr, team* teams, char* filename, int numTeams);
+int processLeague(CURL *curl, chunk* s, int startRound, int endRound, league* lig);
 
 int findSeq(char* str1, char* str2);
 int formatLink(char* str1, char* jumpAdr);

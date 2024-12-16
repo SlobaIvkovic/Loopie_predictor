@@ -20,10 +20,15 @@ char leagueAddress1GER24[] = "https://int.soccerway.com/a/block_competition_matc
 char currentRoundAddr1ENG[] = "https://int.soccerway.com/national/england/premier-league/20242025/regular-season/r81780/";
 char currentRoundAddr1GER[] = "https://int.soccerway.com/national/germany/bundesliga/20242025/regular-season/r81840/";
 
-
+#define CURRENT_ROUND_ADDR_ENG1 currentRoundAddr1ENG
 
 char eng1LeagueDir[7] = "ENG";
 char ger1LeagueDir[7] = "GER"; 
+
+
+#define FIRST_ROUND_ADDR_ENG1_24    leagueAddress1ENG24
+#define NUM_TEAMS_ENG1              20
+
 
 #define ENGLAND_LEAGUE1_24_ADR	    leagueAddress1ENG24
 #define GERMANY_LEAGUE1_24_ADR	    leagueAddress1GER24
@@ -45,6 +50,7 @@ char leagueAddress1NED23[] = "https://int.soccerway.com/a/block_competition_matc
 char leagueAddress1POR23[] = "https://int.soccerway.com/a/block_competition_matches_summary?block_id=page_competition_1_block_competition_matches_summary_10&callback_params=%7B%22page%22%3A33%2C%22block_service_id%22%3A%22competition_summary_block_competitionmatchessummary%22%2C%22round_id%22%3A76181%2C%22outgroup%22%3Afalse%2C%22view%22%3A1%2C%22competition_id%22%3A63%7D&action=changePage&params=%7B%22page%22%3A0%7D";
 
 
+
 #define ENGLAND_LEAGUE1_23_ADR	    leagueAddress1ENG23
 #define GERMANY_LEAGUE1_23_ADR	    leagueAddress1GER23
 #define ITALY_LEAGUE1_23_ADR        leagueAddress1ITA23
@@ -53,17 +59,24 @@ char leagueAddress1POR23[] = "https://int.soccerway.com/a/block_competition_matc
 #define PORTUGAL_LEAGUE1_23_ADR		leagueAddress1POR23
 
 
+void initLeague(league* lig, char* currentRoundAddr, char* firstRoundAddr, int numTeams, char* fileName);
 
 int main(void)
 {
+	/* Not necessarry anymore since team pointer is now part of league struct but I'll leave it here
+	 commented as a reference and reminder on team struct
+	
 	team teamsEngland1[20];
 	team teamsGermany1[18];
 	team teamsItaly1[20];
 	team teamsSpain1[20];
 	team teamsNetherlands1[18];
 	team teamsPortugal1[18];
+	*/
 	
-	league spain1;
+	league* england1 = malloc(sizeof(league));
+	initLeague(england1, CURRENT_ROUND_ADDR_ENG1, FIRST_ROUND_ADDR_ENG1_24, NUM_TEAMS_ENGLAND1, "eng.lg");
+	
 	
 	CURL *curl;
 	CURLcode res;
@@ -76,8 +89,6 @@ int main(void)
   	curl = curl_easy_init();
   	if (curl) 
 	{
-
-		
 		setCurlOptions(curl, &s);
 	    // Set cookies
     	curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "cookies.txt");
@@ -89,29 +100,12 @@ int main(void)
 #if defined VERBOSE_DEBUG    
     	curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
 #endif    
-	
-	//	processLeague(curl, &s, 0, TOTAL_NUM_ROUNDS_PORTUGAL, PORTUGAL_LEAGUE1_23_ADR, teamsPortugal1);
-		
-//		curl_easy_setopt(curl, CURLOPT_URL, "https://int.soccerway.com/national/italy/serie-a/20242025/regular-season/r82869/");
-//		curl_easy_perform(curl);
-//		printf("%s", s.ptr);
-		
 		
 		int currentRound = findCurrentRound(curl, &s, currentRoundAddr1ENG);
 		printf("Integer round fouund %d\n", currentRound);
 		int lastRound = findLastRound(eng1LeagueDir);
-		processLeague(curl, &s, lastRound, currentRound, ENGLAND_LEAGUE1_24_ADR, teamsEngland1, strcat(eng1LeagueDir, ".lg"), NUM_TEAMS_ENGLAND1);
+		processLeague(curl, &s, lastRound, currentRound, england1);
 		
-		currentRound = findCurrentRound(curl, &s, currentRoundAddr1GER);
-		printf("Integer round fouund %d\n", currentRound);
-		lastRound = findLastRound(ger1LeagueDir);
-		processLeague(curl, &s, lastRound, currentRound, GERMANY_LEAGUE1_24_ADR, teamsGermany1, strcat(ger1LeagueDir, ".lg"), NUM_TEAMS_GERMANY1);
-		
-		// After this operation we have directory prepared for the league files if the league is processed for the first time ever
-		// After this process league should know where to place league files
-		
-		
-		findCurrentRound(curl, &s, currentRoundAddr1ENG);
 		
     	curl_easy_cleanup(curl);
   	}
@@ -122,3 +116,25 @@ int main(void)
   	return 0;
 }
 
+
+void initLeague(league* lig, char* currentRoundAddr, char* firstRoundAddr, int numTeams, char* fileName)
+{
+	lig->numOfTeams = numTeams;
+	strcpy(lig->filename, fileName);
+	lig->firstRoundAddr = firstRoundAddr;
+	lig->currentRoundAddr = currentRoundAddr;
+	lig->teams = malloc((sizeof(team))*(numTeams));
+}
+
+#ifdef LEAGUE_INIT_TEST
+{
+	
+	printf("%s\n %s\n %d\n %s\n", england1->currentRoundAddr, england1->firstRoundAddr, england1->numOfTeams, england1->filename);
+	system("pause");
+
+	strcpy(england1->teams[1].name, "Brighton and Hove Albion");
+	printf("%s", england1->teams[1].name);
+	system("pause");
+}
+
+#endif

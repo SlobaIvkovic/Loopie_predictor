@@ -7,7 +7,8 @@
 #define FOUND 1
 #define END_LINKS 'N'
 
-int processLeague(CURL *curl, chunk* s, int startRound, int endRound, char* addr, team* teams, char* filename, int numTeams)
+//int processLeague(CURL *curl, chunk* s, int startRound, int endRound, char* addr, team* teams, char* filename, int numTeams)
+int processLeague(CURL *curl, chunk* s, int startRound, int endRound, league* lig)
 {
 	CURLcode res;
 
@@ -20,7 +21,7 @@ int processLeague(CURL *curl, chunk* s, int startRound, int endRound, char* addr
 		while(startRound < endRound)
 	{
 	
-		curl_easy_setopt(curl, CURLOPT_URL, addr);
+		curl_easy_setopt(curl, CURLOPT_URL, lig->firstRoundAddr);
 	
 		do
 		{
@@ -40,9 +41,9 @@ int processLeague(CURL *curl, chunk* s, int startRound, int endRound, char* addr
               curl_easy_strerror(res));
  	
 		
-	getRoundGamesLinks(s->ptr, links, numTeams/2);
+	getRoundGamesLinks(s->ptr, links, lig->numOfTeams/2);
 
-	visitAllLinks(links, teams, teams);
+	visitAllLinks(links, lig->teams, lig->teams);
 	
 //	printf("_____________________________________________\n");
 	printf("---------------------------------------------\n");
@@ -51,8 +52,8 @@ int processLeague(CURL *curl, chunk* s, int startRound, int endRound, char* addr
 	
 	
 	startRound++;
-	changeRoundAddress(addr, startRound);
-	printf("filename %s", filename);
+	changeRoundAddress(lig->firstRoundAddr, startRound);
+//	printf("filename %s", filename);
 //	system("pause");
 	}
 }

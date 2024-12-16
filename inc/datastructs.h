@@ -46,9 +46,11 @@ typedef struct team team;
 
 struct league
 {
-	char* addr;
-	char* fileName;
+	char* firstRoundAddr;
+	char* currentRoundAddr;
+	char filename[7];
 	int   numOfTeams;
+	team* teams;
 };
 
 typedef struct league league;
