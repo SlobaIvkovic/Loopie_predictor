@@ -14,8 +14,11 @@ void getTeams(char* str1, char* team1, char* team2);
 void getResult(char* str1, char* result, char* halftime);
 
 
-void visitAllLinks(char links[][1000], team* teams, team* teamsWhole);
-int visitLink(char* address, team* teams, team* teamsWhole);
+//void visitAllLinks(char links[][1000], team* teams, team* teamsWhole);
+void visitAllLinks(char links[][1000], team* teams, team* teamsWhole, pair* allPairs);
+
+//int visitLink(char* address, team* teams, team* teamsWhole);
+int visitLink(char* address, team* teams, team* teamsWhole, int pairNum, pair* allPairs);
 void changeRoundAddress(char* leagueAddress1, int round);
 
 #endif

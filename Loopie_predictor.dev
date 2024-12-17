@@ -29,7 +29,7 @@ IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
 CompilerSettings=0000000000000000000000000
-UnitCount=8
+UnitCount=10
 
 [VersionInfo]
 Major=1
@@ -81,9 +81,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit9]
-FileName=C:\Users\sloba\OneDrive\Desktop\Loopie_predictor\inc\datastructs.h
+FileName=src\teamsinfo.c
 CompileCpp=0
-Folder=inc
+Folder=src
 Compile=1
 Link=1
 Priority=1000
@@ -91,7 +91,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit10]
-FileName=C:\Users\sloba\OneDrive\Desktop\Loopie_predictor\inc\updates.h
+FileName=inc\teamsinfo.h
 CompileCpp=0
 Folder=inc
 Compile=1

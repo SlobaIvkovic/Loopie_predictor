@@ -4,8 +4,8 @@
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = obj/main.o obj/leagueprocessing.o obj/setcurloptions.o obj/updates.o
-LINKOBJ  = obj/main.o obj/leagueprocessing.o obj/setcurloptions.o obj/updates.o
+OBJ      = obj/main.o obj/leagueprocessing.o obj/setcurloptions.o obj/updates.o obj/teamsinfo.o
+LINKOBJ  = obj/main.o obj/leagueprocessing.o obj/setcurloptions.o obj/updates.o obj/teamsinfo.o
 LIBS     = -L"C:/MinGW/lib" -L"C:/MinGW/mingw32/lib" -static-libstdc++ -static-libgcc -L"/lib" lib/libbrotlicommon.a lib/libbrotlidec.a lib/libcrypto.a lib/libcurl.a lib/libcurl.dll.a lib/libnghttp2.a lib/libnghttp3.a lib/libngtcp2.a lib/libngtcp2_crypto_quictls.a lib/libpsl.a lib/libssh2.a lib/libssl.a lib/libz.a lib/libzstd.a
 INCS     = -I"C:/MinGW/include" -I"C:/MinGW/lib/gcc/mingw32/6.3.0/include" -I"./include"
 CXXINCS  = -I"C:/MinGW/include" -I"C:/MinGW/lib/gcc/mingw32/6.3.0/include" -I"./include"
@@ -35,3 +35,6 @@ obj/setcurloptions.o: src/setcurloptions.c
 
 obj/updates.o: src/updates.c
 	$(CC) -c src/updates.c -o obj/updates.o $(CFLAGS)
+
+obj/teamsinfo.o: src/teamsinfo.c
+	$(CC) -c src/teamsinfo.c -o obj/teamsinfo.o $(CFLAGS)

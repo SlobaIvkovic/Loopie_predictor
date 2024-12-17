@@ -23,11 +23,14 @@ char currentRoundAddr1GER[] = "https://int.soccerway.com/national/germany/bundes
 
 #define CURRENT_ROUND_ADDR_ITA1 currentRoundAddr1ITA
 #define CURRENT_ROUND_ADDR_ENG1 currentRoundAddr1ENG
+#define CURRENT_ROUND_ADDR_GER1 currentRoundAddr1GER
 
-#define FIRST_ROUND_ADDR_ITA_24     leagueAddress1ITA24
+#define FIRST_ROUND_ADDR_ITA1_24     leagueAddress1ITA24
 #define NUM_TEAMS_ITA1              20
 #define FIRST_ROUND_ADDR_ENG1_24    leagueAddress1ENG24
 #define NUM_TEAMS_ENG1              20
+#define FIRST_ROUND_ADDR_GER1_24     leagueAddress1GER24
+#define NUM_TEAMS_GER1              18
 
 
 char leagueAddress1ENG23[] = "https://int.soccerway.com/a/block_competition_matches_summary?block_id=page_competition_1_block_competition_matches_summary_10&callback_params=%7B%22page%22%3A37%2C%22block_service_id%22%3A%22competition_summary_block_competitionmatchessummary%22%2C%22round_id%22%3A76443%2C%22outgroup%22%3Afalse%2C%22view%22%3A1%2C%22competition_id%22%3A8%7D&action=changePage&params=%7B%22page%22%3A0%7D";
@@ -62,11 +65,15 @@ int main(void)
 	team teamsPortugal1[18];
 	*/
 	
+	// Printf AVALIABLE LEAGUES, this is for the gui
+	
 	league* italy1   = malloc(sizeof(league));
 	league* england1 = malloc(sizeof(league));
+	league* germany1 = malloc(sizeof(league));
 	
-	initLeague(italy1, CURRENT_ROUND_ADDR_ITA1, FIRST_ROUND_ADDR_ITA_24, NUM_TEAMS_ITA1, "ita.lg");
+	initLeague(italy1, CURRENT_ROUND_ADDR_ITA1, FIRST_ROUND_ADDR_ITA1_24, NUM_TEAMS_ITA1, "ita.lg");
 	initLeague(england1, CURRENT_ROUND_ADDR_ENG1, FIRST_ROUND_ADDR_ENG1_24, NUM_TEAMS_ENG1, "eng.lg");
+	initLeague(germany1, CURRENT_ROUND_ADDR_GER1, FIRST_ROUND_ADDR_GER1_24, NUM_TEAMS_GER1, "ger.lg");
 	
 	
 	CURL *curl;
@@ -102,6 +109,10 @@ int main(void)
 		printf("Integer round fouund %d\n", currentRound);
 		lastRound = findLastRound("eng.lg");
 		processLeague(curl, &s, lastRound, currentRound, england1);
+		
+		currentRound = findCurrentRound(curl, &s, currentRoundAddr1GER);
+		lastRound = findLastRound("ger.lg");
+		processLeague(curl, &s, lastRound, currentRound, germany1);
 		
 		
     	curl_easy_cleanup(curl);

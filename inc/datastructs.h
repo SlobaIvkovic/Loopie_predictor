@@ -60,7 +60,7 @@ struct pair
 	char homeTeam[100];
 	char awayTeam[100];
 	char result[5];
-	char halfTimeResult[5];
+	char halftimeResult[5];
 	
 	float totalCoeff;
 	float homeAwayCoeff;

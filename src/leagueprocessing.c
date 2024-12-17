@@ -2,10 +2,12 @@
 #include "../inc/datastructs.h"
 #include "../inc/setcurloptions.h"
 #include "../inc/leagueprocessing.h"
+#include "../inc/teamsinfo.h"
 
 #define NOT_FOUND 0
 #define FOUND 1
 #define END_LINKS 'N'
+#define LAST_PAIR lig->numOfTeams/2-1
 
 //int processLeague(CURL *curl, chunk* s, int startRound, int endRound, char* addr, team* teams, char* filename, int numTeams)
 int processLeague(CURL *curl, chunk* s, int startRound, int endRound, league* lig)
@@ -13,14 +15,16 @@ int processLeague(CURL *curl, chunk* s, int startRound, int endRound, league* li
 	CURLcode res;
 
 	char links[14][1000];
-	char roundResults[14][64];    // Number of games number of characters for the namaes and results
+//	char roundResults[14][64];    // Number of games number of characters for the namaes and results
+
+	pair* allRoundPairs;
 	
 	
 	int tries = 15;
 	
 		while(startRound < endRound)
 	{
-	
+		allRoundPairs = malloc(sizeof(pair) * (lig->numOfTeams/2));
 		curl_easy_setopt(curl, CURLOPT_URL, lig->firstRoundAddr);
 	
 		do
@@ -43,17 +47,29 @@ int processLeague(CURL *curl, chunk* s, int startRound, int endRound, league* li
 		
 	getRoundGamesLinks(s->ptr, links, lig->numOfTeams/2);
 
-	visitAllLinks(links, lig->teams, lig->teams);
+	visitAllLinks(links, lig->teams, lig->teams, allRoundPairs);
+	
 	
 	// Rezultate cuvamo u matrici
 	// Ako je celo kolo uspešno obraðeno rezultate iz matrice upisujemo u fajl
 	// Mora postojati mehanizam da se verifikuje uspešna obrada kola
 	
+	// Ovde imam niz sa svim timovima, ako je prva runda, dodati svakom timu ime i inicijalizovati parametre
+	if(startRound == 0)
+	{
+		initAllTeamsNames(lig, allRoundPairs);
+		printNames(lig);
+		system("pause");
+	}
+	
 //	printf("_____________________________________________\n");
+	printf("---------------------------------------------\n");
+	printf("%s %s %s %s\n", allRoundPairs[LAST_PAIR].homeTeam, allRoundPairs[LAST_PAIR].awayTeam, allRoundPairs[LAST_PAIR].result, 
+	allRoundPairs[LAST_PAIR].halftimeResult);
 	printf("---------------------------------------------\n");
 	free(s->ptr);
 	init_chunk(s);
-	
+	free(allRoundPairs);
 	
 	startRound++;
 	changeRoundAddress(lig->firstRoundAddr, startRound);
@@ -144,18 +160,18 @@ int getRoundGamesLinks(char* str1, char links[][1000], int numLinks)
 	return 0;
 }
 
-void visitAllLinks(char links[][1000], team* teams, team* teamsWhole)
+void visitAllLinks(char links[][1000], team* teams, team* teamsWhole, pair* allPairs)
 {
 	int i = 0;
 	while(links[i][0] != END_LINKS)
 	{
-		visitLink(&links[i][0], &teams[i*2], teamsWhole);
+		visitLink(&links[i][0], &teams[i*2], teamsWhole, i, allPairs);
 		i++;
 	}
 	printf("EXITED");
 }
 
-int visitLink(char* address, team* teams, team* teamsWhole)
+int visitLink(char* address, team* teams, team* teamsWhole, int pairNum, pair* allPairs)
 {
 	char toFind[50];
 	int i = 0;
@@ -190,11 +206,16 @@ int visitLink(char* address, team* teams, team* teamsWhole)
 
 	getTeams(s.ptr, team1, team2);
 	printf("%s %s ", team1, team2);
+	
+	strcpy(allPairs[pairNum].homeTeam, team1);
+	strcpy(allPairs[pairNum].awayTeam, team2);
+	
 	getResult(s.ptr, result, halftime);
 	printf("%s %s\n", result, halftime);
 	
-	FILE *fp;
-	fp = fopen("england.lg", "a");
+	strcpy(allPairs[pairNum].result, result);
+	strcpy(allPairs[pairNum].halftimeResult, halftime);
+	
 
 /*	
 	FILE *fp;
