@@ -45,6 +45,10 @@ int processLeague(CURL *curl, chunk* s, int startRound, int endRound, league* li
 
 	visitAllLinks(links, lig->teams, lig->teams);
 	
+	// Rezultate cuvamo u matrici
+	// Ako je celo kolo uspešno obraðeno rezultate iz matrice upisujemo u fajl
+	// Mora postojati mehanizam da se verifikuje uspešna obrada kola
+	
 //	printf("_____________________________________________\n");
 	printf("---------------------------------------------\n");
 	free(s->ptr);
