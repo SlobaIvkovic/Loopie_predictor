@@ -21,13 +21,7 @@ int findCurrentRound(CURL *curl, chunk* s, char* addr)
 	curl_easy_setopt(curl, CURLOPT_URL, addr);
 	curl_easy_perform(curl);
 	
-//	printf("%s", s->ptr);
-	
 	buff = s->ptr;
-//	printf("%s", buff);
-//	char buff1[50];
-//	strcpy(buff1, "page_dropdown");
-	
 	
 	while((searchResult = findSeq(&buff[i++], "page_dropdown")) != 1 && buff[i] != '\0');
 	while((searchResult = findSeq(&buff[i++], "d\">")) != 1 && buff[i] != '\0');

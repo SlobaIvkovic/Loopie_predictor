@@ -10,72 +10,73 @@
 #define LAST_PAIR lig->numOfTeams/2-1
 
 //int processLeague(CURL *curl, chunk* s, int startRound, int endRound, char* addr, team* teams, char* filename, int numTeams)
-int processLeague(CURL *curl, chunk* s, int startRound, int endRound, league* lig)
+int processLeague(CURL* curl, chunk* s, int startRound, int endRound, league* lig)
+{
+	// This will hold all the results when the single round processing is finished
+	pair* allRoundPairs;	
+	
+	while(startRound < endRound)
+	{
+		// we need a new one for every round, it holds results temporarly before it is written to a file
+		// and can be discarded anytime if the round process was unsucesfull without writting corupt data to the file
+		allRoundPairs = malloc(sizeof(pair) * (lig->numOfTeams/2));
+		
+		processOneRound(curl, s, lig, allRoundPairs);
+	
+		// Ako je celo kolo uspešno obraðeno rezultate iz matrice upisujemo u fajl
+		// Mora postojati mehanizam da se verifikuje uspešna obrada kola
+	
+		// Ovde imam niz sa svim timovima, ako je prva runda, dodati svakom timu ime i inicijalizovati parametre
+		if(startRound == 0)
+		{
+			initAllTeams(lig, allRoundPairs);
+//			printNames(lig);
+		}
+
+		printAllRoundResults(allRoundPairs, lig->numOfTeams/2);
+		printf("---------------------------------------------\n");
+		updateTeamsStats(lig, allRoundPairs);
+		printTeamsStats(lig);
+		printf("---------------------------------------------\n");
+		system("pause");
+		
+		free(s->ptr);
+		init_chunk(s);
+		free(allRoundPairs);
+	
+		startRound++;
+		changeRoundAddress(lig->firstRoundAddr, startRound);
+	}	
+}
+
+void processOneRound(CURL* curl, chunk* s, league* lig, pair* allRoundPairs)
 {
 	CURLcode res;
-
+	int tries = 10;
+	// TODO dynamically alocate
 	char links[14][1000];
-//	char roundResults[14][64];    // Number of games number of characters for the namaes and results
-
-	pair* allRoundPairs;
 	
-	
-	int tries = 15;
-	
-		while(startRound < endRound)
+	curl_easy_setopt(curl, CURLOPT_URL, lig->firstRoundAddr);
+	do
 	{
-		allRoundPairs = malloc(sizeof(pair) * (lig->numOfTeams/2));
-		curl_easy_setopt(curl, CURLOPT_URL, lig->firstRoundAddr);
-	
-		do
+		res = curl_easy_perform(curl);
+		if(res == CURLE_OK)
 		{
-			res = curl_easy_perform(curl);
-			if(res == CURLE_OK)
-			{
-				break;
-			}
-			else
-			{
-				tries--;
-			}
-		}while(tries);
+			break;
+		}
+		else
+		{
+			tries--;
+		}
+	}while(tries);
 
-    	if(res != CURLE_OK)
-      	fprintf(stderr, "curl_easy_perform() failed: %s\n",
-              curl_easy_strerror(res));
+    if(res != CURLE_OK)
+    fprintf(stderr, "curl_easy_perform() failed: %s\n",
+    curl_easy_strerror(res));
  	
-		
 	getRoundGamesLinks(s->ptr, links, lig->numOfTeams/2);
 
 	visitAllLinks(links, lig->teams, lig->teams, allRoundPairs);
-	
-	
-	// Rezultate cuvamo u matrici
-	// Ako je celo kolo uspešno obraðeno rezultate iz matrice upisujemo u fajl
-	// Mora postojati mehanizam da se verifikuje uspešna obrada kola
-	
-	// Ovde imam niz sa svim timovima, ako je prva runda, dodati svakom timu ime i inicijalizovati parametre
-	if(startRound == 0)
-	{
-		initAllTeamsNames(lig, allRoundPairs);
-		printNames(lig);
-		system("pause");
-	}
-	
-//	printf("_____________________________________________\n");
-	printf("---------------------------------------------\n");
-	printf("%s %s %s %s\n", allRoundPairs[LAST_PAIR].homeTeam, allRoundPairs[LAST_PAIR].awayTeam, allRoundPairs[LAST_PAIR].result, 
-	allRoundPairs[LAST_PAIR].halftimeResult);
-	printf("---------------------------------------------\n");
-	free(s->ptr);
-	init_chunk(s);
-	free(allRoundPairs);
-	
-	startRound++;
-	changeRoundAddress(lig->firstRoundAddr, startRound);
-//	printf("filename %s", filename);
-//	system("pause");
-	}
 }
 
 int findSeq(char* str1, char* str2)
@@ -153,7 +154,7 @@ int getRoundGamesLinks(char* str1, char links[][1000], int numLinks)
 		strcpy(&links[u++][0], jumpAdr);
 		
 //	visitLink(jumpAdr);
-		printf("\n\n** %s\n%d\n", jumpAdr, u-1);
+//		printf("\n\n** %s\n%d\n", jumpAdr, u-1);
 	}
 	
 	links[u][0] = END_LINKS;
@@ -168,7 +169,6 @@ void visitAllLinks(char links[][1000], team* teams, team* teamsWhole, pair* allP
 		visitLink(&links[i][0], &teams[i*2], teamsWhole, i, allPairs);
 		i++;
 	}
-	printf("EXITED");
 }
 
 int visitLink(char* address, team* teams, team* teamsWhole, int pairNum, pair* allPairs)

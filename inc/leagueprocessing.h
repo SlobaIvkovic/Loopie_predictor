@@ -5,6 +5,7 @@
 
 //int processLeague(CURL *curl, chunk* s, int startRound, int endRound, char* addr, team* teams, char* filename, int numTeams);
 int processLeague(CURL *curl, chunk* s, int startRound, int endRound, league* lig);
+void processOneRound(CURL* crul, chunk* s, league* lig, pair* allRoundPairs);
 
 int findSeq(char* str1, char* str2);
 int formatLink(char* str1, char* jumpAdr);

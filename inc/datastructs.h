@@ -71,6 +71,8 @@ struct pair
 	
 	
 	
+	
+	int numPairsFoundInRound;
 };
 
 typedef struct pair pair;

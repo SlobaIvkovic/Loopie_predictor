@@ -103,10 +103,10 @@ int main(void)
 		
 		currentRound = findCurrentRound(curl, &s, currentRoundAddr1ITA);
 		lastRound = findLastRound("ita.lg");
+		printf("Current round %d", currentRound);
 		processLeague(curl, &s, lastRound, currentRound, italy1);
 		
 		currentRound = findCurrentRound(curl, &s, currentRoundAddr1ENG);
-		printf("Integer round fouund %d\n", currentRound);
 		lastRound = findLastRound("eng.lg");
 		processLeague(curl, &s, lastRound, currentRound, england1);
 		
