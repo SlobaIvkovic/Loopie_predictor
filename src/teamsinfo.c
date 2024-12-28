@@ -5,6 +5,12 @@
 #include "../inc/datastructs.h"
 #include "../inc/teamsinfo.h"
 
+/*************************
+Šta bude ako u prvom kolu bude odložena utakmica
+malo verovatno ali moguce, onda lista timova nije dobro
+inicijalizovana
+*/////////////////////////
+
 int initAllTeams(league* lig, pair* allPairs)
 {
 	initAllTeamsNames(lig, allPairs);
@@ -56,7 +62,7 @@ void initAllTeamsStats(league* lig)
 void printAllRoundResults(pair* allRoundPairs, int numPairs)
 {
 	int i = 0;
-	for(i = 0; i < numPairs; i++)
+	for(i = 0; i < allRoundPairs[0].numPairsFoundInRound; i++)
 	{
 		printf("%s %s %s %s\n", allRoundPairs[i].homeTeam, allRoundPairs[i].awayTeam, allRoundPairs[i].result, allRoundPairs[i].halftimeResult);
 	}
@@ -75,10 +81,10 @@ void printNames(league* lig)
 
 void updateTeamsStats(league* lig, pair* allRoundPairs)
 {
-	int i = 0, j = 0;
+	int i = 0, j = 0, k = 0;
 	int cmpResult = 1;
 	//needs to be done for all teams when the round processing is finished
-	while(i < lig->numOfTeams/2)
+	while(i < allRoundPairs[0].numPairsFoundInRound)
 	{
 		//for every pair find corresponding teams
 		// strcmp with all teams in the league both host and guest
@@ -88,14 +94,16 @@ void updateTeamsStats(league* lig, pair* allRoundPairs)
 		
 		while(cmpResult != 0 && j < lig->numOfTeams)
 		{
+			// INSIDE THIS WHILE CHECK BOTH HOME AND AWAY
 			cmpResult = strcmp(allRoundPairs[i].homeTeam, lig->teams[j].name);
 			j++;	
 		}
 		if(cmpResult == 0)
 		{
 			j--;
-			lig->teams[j].played++;
-			lig->teams[j].playedAsHost++;
+			k = j;
+			lig->teams[k].played++;
+			lig->teams[k].playedAsHost++;
 			//update stats team index, host guest, ht ft
 		}
 		else
@@ -106,6 +114,11 @@ void updateTeamsStats(league* lig, pair* allRoundPairs)
 		cmpResult = 1;
 		while(cmpResult != 0 && j < lig->numOfTeams)
 		{
+			if(j == k)
+			{
+				j++;
+				continue;
+			}
 			cmpResult = strcmp(allRoundPairs[i].awayTeam, lig->teams[j].name);
 			j++;
 		}

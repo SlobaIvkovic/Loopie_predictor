@@ -20,7 +20,8 @@ int processLeague(CURL* curl, chunk* s, int startRound, int endRound, league* li
 		// we need a new one for every round, it holds results temporarly before it is written to a file
 		// and can be discarded anytime if the round process was unsucesfull without writting corupt data to the file
 		allRoundPairs = malloc(sizeof(pair) * (lig->numOfTeams/2));
-		
+
+		printf("\nProcessing Round ");		
 		processOneRound(curl, s, lig, allRoundPairs);
 	
 		// Ako je celo kolo uspešno obraðeno rezultate iz matrice upisujemo u fajl
@@ -33,12 +34,15 @@ int processLeague(CURL* curl, chunk* s, int startRound, int endRound, league* li
 //			printNames(lig);
 		}
 
+		printf("\n");
 		printAllRoundResults(allRoundPairs, lig->numOfTeams/2);
 		printf("---------------------------------------------\n");
 		updateTeamsStats(lig, allRoundPairs);
 		printTeamsStats(lig);
 		printf("---------------------------------------------\n");
-		system("pause");
+//		system("pause");
+		
+//TODO Update League Stats		
 		
 		free(s->ptr);
 		init_chunk(s);
@@ -55,6 +59,7 @@ void processOneRound(CURL* curl, chunk* s, league* lig, pair* allRoundPairs)
 	int tries = 10;
 	// TODO dynamically alocate
 	char links[14][1000];
+	int totalPlayedInRound;
 	
 	curl_easy_setopt(curl, CURLOPT_URL, lig->firstRoundAddr);
 	do
@@ -74,7 +79,9 @@ void processOneRound(CURL* curl, chunk* s, league* lig, pair* allRoundPairs)
     fprintf(stderr, "curl_easy_perform() failed: %s\n",
     curl_easy_strerror(res));
  	
-	getRoundGamesLinks(s->ptr, links, lig->numOfTeams/2);
+	totalPlayedInRound = getRoundGamesLinks(s->ptr, links, lig->numOfTeams/2);
+	allRoundPairs[0].numPairsFoundInRound = totalPlayedInRound;
+	
 
 	visitAllLinks(links, lig->teams, lig->teams, allRoundPairs);
 }
@@ -141,24 +148,24 @@ int getRoundGamesLinks(char* str1, char links[][1000], int numLinks)
 		strcpy(toFind, "FT");
 	
 		while((searchResult = findSeq(&str1[i++], toFind)) != FOUND && str1[i] != '\0');
-		if(searchResult == 0)
+		if(searchResult == FOUND)
 		{
 			totalLinks++;
-			break;
+			strcpy(toFind, " \\\"><a href=\\\"\\/matches\\/20");
+			while(findSeq(&str1[i++], toFind) != FOUND && str1[i] != '\0');
+	
+			formatLink(&str1[i+14], jumpAdr);
+	
+			strcpy(&links[u++][0], jumpAdr);			
+			
 		}
-		strcpy(toFind, " \\\"><a href=\\\"\\/matches\\/20");
-		while(findSeq(&str1[i++], toFind) != FOUND && str1[i] != '\0');
-	
-		formatLink(&str1[i+14], jumpAdr);
-	
-		strcpy(&links[u++][0], jumpAdr);
+
 		
 //	visitLink(jumpAdr);
 //		printf("\n\n** %s\n%d\n", jumpAdr, u-1);
 	}
-	
 	links[u][0] = END_LINKS;
-	return 0;
+	return totalLinks;
 }
 
 void visitAllLinks(char links[][1000], team* teams, team* teamsWhole, pair* allPairs)
@@ -205,17 +212,18 @@ int visitLink(char* address, team* teams, team* teamsWhole, int pairNum, pair* a
  
 
 	getTeams(s.ptr, team1, team2);
-	printf("%s %s ", team1, team2);
+//	printf("%s %s ", team1, team2);
 	
 	strcpy(allPairs[pairNum].homeTeam, team1);
 	strcpy(allPairs[pairNum].awayTeam, team2);
 	
 	getResult(s.ptr, result, halftime);
-	printf("%s %s\n", result, halftime);
+//	printf("%s %s\n", result, halftime);
 	
 	strcpy(allPairs[pairNum].result, result);
 	strcpy(allPairs[pairNum].halftimeResult, halftime);
 	
+	printf("#");
 
 /*	
 	FILE *fp;
