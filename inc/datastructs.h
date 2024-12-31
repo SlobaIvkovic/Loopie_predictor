@@ -40,6 +40,32 @@ struct team
 	int inefficientGames;
 	
 	int mfInd;                     // index associated with games played with more goals in the first half
+	
+	// New variables after refactor
+	unsigned short wonAsHost;
+	unsigned short lostAsHost;
+	unsigned short drawAsHost;
+	
+	unsigned short wonAsGuest;
+	unsigned short lostAsGuest;
+	unsigned short drawAsGuest;
+	
+	unsigned short wonTotal;
+	unsigned short lostTotal;
+	unsigned short drawTotal;
+	
+	unsigned short GGAsHost;
+	unsigned short GGAsGuest;
+	unsigned short GGTotal;
+	
+	unsigned short threePlusAsHost;
+	unsigned short threePlusAsGuest;
+	unsigned short threePlusTotal;
+	
+	unsigned short zeroToTwoAsHost;
+	unsigned short zeroToTwoAsGuest;
+	unsigned short zeroToTwoTotal;
+	
 };
 
 typedef struct team team;

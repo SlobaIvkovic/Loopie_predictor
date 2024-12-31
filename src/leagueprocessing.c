@@ -38,7 +38,7 @@ int processLeague(CURL* curl, chunk* s, int startRound, int endRound, league* li
 		printAllRoundResults(allRoundPairs);
 		printf("---------------------------------------------\n");
 		updateTeamsStats(lig, allRoundPairs);
-		printTeamsStats(lig);
+//		printTeamsStats(lig);
 		printf("---------------------------------------------\n");
 //		system("pause");
 		
@@ -50,7 +50,8 @@ int processLeague(CURL* curl, chunk* s, int startRound, int endRound, league* li
 	
 		startRound++;
 		changeRoundAddress(lig->firstRoundAddr, startRound);
-	}	
+	}
+	printTeamsStats(lig);	
 }
 
 void processOneRound(CURL* curl, chunk* s, league* lig, pair* allRoundPairs)

@@ -54,6 +54,10 @@ void initAllTeamsStats(league* lig)
 		lig->teams[i].playedAsHost = 0;
 		
 		lig->teams[i].playedAsGuest = 0;
+		
+		//
+		
+//		lig->teams[i].GG = 0;
 
 		i++;
 	}
@@ -84,6 +88,7 @@ void updateTeamsStats(league* lig, pair* allRoundPairs)
 	int i = 0, j = 0;
 	int cmpResult;
 	int hit;
+	int indexes[2];
 
 	//needs to be done for all teams when the round processing is finished
 	while(i < allRoundPairs[0].numPairsFoundInRound)
@@ -98,7 +103,9 @@ void updateTeamsStats(league* lig, pair* allRoundPairs)
 			{
 				lig->teams[j].played++;
 				lig->teams[j].playedAsHost++;
+				
 				hit++;
+				indexes[0] = j;
 			}
 				
 			cmpResult = strcmp(allRoundPairs[i].awayTeam, lig->teams[j].name);
@@ -106,7 +113,9 @@ void updateTeamsStats(league* lig, pair* allRoundPairs)
 			{
 				lig->teams[j].played++;
 				lig->teams[j].playedAsGuest++;
+				
 				hit++;
+				indexes[1] = j;
 			}
 			
 			j++;
@@ -117,9 +126,113 @@ void updateTeamsStats(league* lig, pair* allRoundPairs)
 		if(hit < 2)
 		{
 			printf("\nCant find this Team\n");
+		}
+		else
+		{
+			updateLegacyStats(lig->teams, allRoundPairs[i].halftimeResult, allRoundPairs[i].result, indexes[0], indexes[1]);
+			
+			updateWinsLosses(lig->teams, allRoundPairs[i].result[0], allRoundPairs[i].result[2], indexes[0], indexes[1]);
+			updateGoalsStats(lig->teams, allRoundPairs[i].result[0], allRoundPairs[i].result[2], indexes[0], indexes[1]);
+			
 		}		
 		//Go to the next pair
 		i++;
+	}
+}
+
+void updateLegacyStats(team* tim, char* halftime, char* result, int hostIndex, int guestIndex)
+{
+	int ht;
+	int ft;
+	
+	ft = result[0] - '0' + result[2] - '0';
+	ht = halftime[0] - '0' + halftime[2] - '0';
+	
+	int homeFT;
+	int awayFT;
+	
+	int homeHT;
+	int awayHT;
+	
+	if(halftime[0] - '0' >= 1)
+	{
+		tim[hostIndex].htScoresAtLeastOne++;
+		tim[guestIndex].htConceedesAtLeastOne++;
+	}
+	if(halftime[2] - '0' >=1 )
+	{
+		tim[guestIndex].htScoresAtLeastOne++;
+		tim[hostIndex].htConceedesAtLeastOne++;
+	}
+	/***********************************************************************/
+	if(ht > (ft - ht))
+	{
+		tim[hostIndex].moreInFirst++;
+		tim[guestIndex].moreInFirst++;
+	}
+			
+	if(ht >= 1)
+	{
+		tim[hostIndex].numAtLeastOne++;
+		tim[guestIndex].numAtLeastOne++;
+		if(ft >= 2)
+		{
+			tim[hostIndex].onePlusTwoPlus++;
+			tim[guestIndex].onePlusTwoPlus++;
+		}
+	}
+	
+	if(ht >= 2)
+	{
+		tim[hostIndex].twoPlusTotal++;
+		tim[guestIndex].twoPlusTotal++;
+		
+		tim[hostIndex].twoPlusAsHost++;
+		tim[guestIndex].twoPlusAsGuest++;
+	}
+
+}
+
+// ovde imam indekse domacina i gosta u listi svih timova
+// 
+
+void updateWinsLosses(team* tim, char ft1, char ft2, int hostIndex, int guestIndex)
+{
+	if(ft1 > ft2)
+	{
+		tim[hostIndex].wonAsHost++;
+		tim[guestIndex].lostAsHost++;
+	}
+	else if(ft1 < ft2)
+	{
+		tim[guestIndex].wonAsGuest++;
+		tim[hostIndex].lostAsHost++;
+	}
+	else
+	{
+		tim[hostIndex].drawAsHost++;
+		tim[guestIndex].drawAsGuest++;
+	} 
+}
+
+void updateGoalsStats(team* tim, char ft1, char ft2, int hostIndex, int guestIndex)
+{
+	int allGoals = ft1 - '0' + ft2 - '0';
+	if(allGoals > 2)
+	{
+		tim[hostIndex].threePlusAsHost++;
+		tim[guestIndex].threePlusAsGuest++;
+	}
+	else
+	{
+		tim[hostIndex].zeroToTwoAsHost++;
+		tim[guestIndex].zeroToTwoAsGuest++;
+	}
+	
+	if(ft1 - '0' && ft2 - '0')
+	{
+		tim[hostIndex].GGAsHost++;
+		tim[guestIndex].GGAsGuest++;
 	}
 }
 
@@ -128,6 +241,16 @@ void printTeamsStats(league* lig)
 	int i = 0;
 	for(i = 0; i < lig->numOfTeams; i++)
 	{
-		printf("%s played %d as host %d as guest %d\n", lig->teams[i].name, lig->teams[i].played, lig->teams[i].playedAsHost, lig->teams[i].playedAsGuest);
+		printf("\n%s played %d as host %d as guest %d\n", lig->teams[i].name, lig->teams[i].played, lig->teams[i].playedAsHost, lig->teams[i].playedAsGuest);
+		/************************** Legacy Stats ********************************************************************************************************/
+		printf("\n|2+HT %d|   |2+HT_D %d|   |2+HT_G %d|\n", lig->teams[i].twoPlusTotal, lig->teams[i].twoPlusAsHost, lig->teams[i].twoPlusAsGuest);
+		printf("\n|1+HT %d|   |1+2+ %d|     |I>II %d|\n", lig->teams[i].numAtLeastOne, lig->teams[i].onePlusTwoPlus, lig->teams[i].moreInFirst);
+		printf("\nscores 1+ht %d conceedes 1+ht %d\n", lig->teams[i].htScoresAtLeastOne, lig->teams[i].htConceedesAtLeastOne);
+		/************************************************************************************************************************************************/
+		printf("\nWon as host %d as guest %d\n",lig->teams[i].wonAsHost, lig->teams[i].wonAsGuest);
+		printf("\n3+ as host %d as guest %d\n",lig->teams[i].threePlusAsHost, lig->teams[i].threePlusAsGuest);
+		printf("\n0-2 as host %d as guest %d\n",lig->teams[i].zeroToTwoAsHost, lig->teams[i].zeroToTwoAsGuest);
+		printf("\nGG as host %d as guest %d\n",lig->teams[i].GGAsHost, lig->teams[i].GGAsGuest);
+
 	}
 }

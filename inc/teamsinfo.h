@@ -9,6 +9,9 @@ void printAllRoundResults(pair* allRoundPairs);
 void printNames(league* lig);
 
 void updateTeamsStats(league* lig, pair* allRoundPairs);
+void updateLegacyStats(team* tim, char* halftime, char* result, int hostIndex, int guestIndex);
+void updateWinsLosses(team* tim, char ft1, char ft2, int hostIndex, int guestIndex);
+void updateGoalsStats(team* tim, char ft1, char ft2, int hostIndex, int guestIndex);
 void printTeamsStats(league* lig);
 
 #endif
