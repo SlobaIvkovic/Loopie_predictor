@@ -21,7 +21,7 @@ int processLeague(CURL* curl, chunk* s, int startRound, int endRound, league* li
 		// and can be discarded anytime if the round process was unsucesfull without writting corupt data to the file
 		allRoundPairs = malloc(sizeof(pair) * (lig->numOfTeams/2));
 
-		printf("\nProcessing Round ");		
+		printf("\nProcessing Round %d  ", startRound+1);		
 		processOneRound(curl, s, lig, allRoundPairs);
 	
 		// Ako je celo kolo uspešno obraðeno rezultate iz matrice upisujemo u fajl
@@ -35,7 +35,7 @@ int processLeague(CURL* curl, chunk* s, int startRound, int endRound, league* li
 		}
 
 		printf("\n");
-		printAllRoundResults(allRoundPairs, lig->numOfTeams/2);
+		printAllRoundResults(allRoundPairs);
 		printf("---------------------------------------------\n");
 		updateTeamsStats(lig, allRoundPairs);
 		printTeamsStats(lig);

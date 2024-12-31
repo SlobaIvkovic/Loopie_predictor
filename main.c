@@ -104,15 +104,17 @@ int main(void)
 		currentRound = findCurrentRound(curl, &s, currentRoundAddr1ITA);
 		lastRound = findLastRound("ita.lg");
 		printf("Current round %d", currentRound);
-		processLeague(curl, &s, lastRound, currentRound, italy1);
+		processLeague(curl, &s, lastRound, currentRound-1, italy1);
+	
 		
 		currentRound = findCurrentRound(curl, &s, currentRoundAddr1ENG);
 		lastRound = findLastRound("eng.lg");
-		processLeague(curl, &s, lastRound, currentRound, england1);
-		
+		processLeague(curl, &s, lastRound, currentRound-1, england1);		
+
 		currentRound = findCurrentRound(curl, &s, currentRoundAddr1GER);
 		lastRound = findLastRound("ger.lg");
-		processLeague(curl, &s, lastRound, currentRound, germany1);
+		printf("Current round %d", currentRound);
+		processLeague(curl, &s, lastRound, currentRound-1, germany1);
 		
 		
     	curl_easy_cleanup(curl);

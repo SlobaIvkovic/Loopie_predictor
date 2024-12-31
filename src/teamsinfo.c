@@ -59,7 +59,7 @@ void initAllTeamsStats(league* lig)
 	}
 }
 
-void printAllRoundResults(pair* allRoundPairs, int numPairs)
+void printAllRoundResults(pair* allRoundPairs)
 {
 	int i = 0;
 	for(i = 0; i < allRoundPairs[0].numPairsFoundInRound; i++)
@@ -81,63 +81,45 @@ void printNames(league* lig)
 
 void updateTeamsStats(league* lig, pair* allRoundPairs)
 {
-	int i = 0, j = 0, k = 0;
-	int cmpResult = 1;
+	int i = 0, j = 0;
+	int cmpResult;
+	int hit;
+
 	//needs to be done for all teams when the round processing is finished
 	while(i < allRoundPairs[0].numPairsFoundInRound)
-	{
-		//for every pair find corresponding teams
-		// strcmp with all teams in the league both host and guest
-		
-		//find in the list of teams
-		// when found update its stats
-		
-		while(cmpResult != 0 && j < lig->numOfTeams)
+	{	
+		j = 0;
+		hit = 0;
+		do
 		{
 			// INSIDE THIS WHILE CHECK BOTH HOME AND AWAY
 			cmpResult = strcmp(allRoundPairs[i].homeTeam, lig->teams[j].name);
-			j++;	
-		}
-		if(cmpResult == 0)
-		{
-			j--;
-			k = j;
-			lig->teams[k].played++;
-			lig->teams[k].playedAsHost++;
-			//update stats team index, host guest, ht ft
-		}
-		else
-		{
-			printf("\nCant find this host\n");
-		}
-		j = 0;
-		cmpResult = 1;
-		while(cmpResult != 0 && j < lig->numOfTeams)
-		{
-			if(j == k)
+			if( cmpResult == 0)
 			{
-				j++;
-				continue;
+				lig->teams[j].played++;
+				lig->teams[j].playedAsHost++;
+				hit++;
 			}
+				
 			cmpResult = strcmp(allRoundPairs[i].awayTeam, lig->teams[j].name);
+			if(cmpResult == 0)
+			{
+				lig->teams[j].played++;
+				lig->teams[j].playedAsGuest++;
+				hit++;
+			}
+			
 			j++;
-		}
-		if(cmpResult == 0)
-		{
-			j--;
-			lig->teams[j].played++;
-			lig->teams[j].playedAsGuest++;
-		}
-		else
-		{
-			printf("\nCant find this guest\n");
-		}
+				
+		// Two hits necesarry while traversing through all teams, one for the host and one for the guest		
+		}while(hit < 2 && j < lig->numOfTeams);
 		
-
+		if(hit < 2)
+		{
+			printf("\nCant find this Team\n");
+		}		
 		//Go to the next pair
 		i++;
-		j = 0;
-		cmpResult = 1;
 	}
 }
 

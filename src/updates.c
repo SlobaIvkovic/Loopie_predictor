@@ -29,20 +29,17 @@ int findCurrentRound(CURL *curl, chunk* s, char* addr)
 	if(searchResult == 1)
 	{
 		i += 2;
-		while(buff[i] != ' ')
-		{
-			round[j++] = buff[i++];
-		}
-		round[j] = '\0';
+		round[0] = buff[i];
+		round[1] = buff[i+1];
+		round[2] = '\0';
 		
-		
-		if(j == 1)
+		if(round[1] < 58 && round[1] > 47)
 		{
-			return round[0] - 48;
+			return round[1] - 48 + (round[0] - 48) * 10;
 		}
 		else
 		{
-			return round[1] - 48 + (round[0] - 48) * 10;
+			return round[0] - 48;
 		}
 		
 		return 0;
@@ -55,13 +52,14 @@ int findCurrentRound(CURL *curl, chunk* s, char* addr)
 int findLastRound(char* subdir)
 {
 	char str[30] = "../DATA/";
-	strcat(str, subdir); 
+//	strcat(str, subdir); 
 	// Check the directory existance
 	DIR* dir = opendir(str);
 	if(dir)
 	{
 		closedir(dir);
 		// Placeholder here the file should be used to find the last round
+		return 0;
 	}
 	// if doesnt exist create one return 0
 	else
@@ -69,6 +67,5 @@ int findLastRound(char* subdir)
 		_mkdir(str);
 		return 0;
 	}
-	
 	
 }
