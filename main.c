@@ -50,7 +50,7 @@ char leagueAddress1POR23[] = "https://int.soccerway.com/a/block_competition_matc
 #define PORTUGAL_LEAGUE1_23_ADR		leagueAddress1POR23
 
 
-void initLeague(league* lig, char* currentRoundAddr, char* firstRoundAddr, int numTeams, char* fileName);
+void initLeague(league* lig, char* currentRoundAddr, char* firstRoundAddr, int numTeams, char* subdir);
 
 int main(void)
 {
@@ -71,9 +71,9 @@ int main(void)
 	league* england1 = malloc(sizeof(league));
 	league* germany1 = malloc(sizeof(league));
 	
-	initLeague(italy1, CURRENT_ROUND_ADDR_ITA1, FIRST_ROUND_ADDR_ITA1_24, NUM_TEAMS_ITA1, "ita.lg");
-	initLeague(england1, CURRENT_ROUND_ADDR_ENG1, FIRST_ROUND_ADDR_ENG1_24, NUM_TEAMS_ENG1, "eng.lg");
-	initLeague(germany1, CURRENT_ROUND_ADDR_GER1, FIRST_ROUND_ADDR_GER1_24, NUM_TEAMS_GER1, "ger.lg");
+	initLeague(italy1, CURRENT_ROUND_ADDR_ITA1, FIRST_ROUND_ADDR_ITA1_24, NUM_TEAMS_ITA1, "ita1");
+	initLeague(england1, CURRENT_ROUND_ADDR_ENG1, FIRST_ROUND_ADDR_ENG1_24, NUM_TEAMS_ENG1, "eng1");
+	initLeague(germany1, CURRENT_ROUND_ADDR_GER1, FIRST_ROUND_ADDR_GER1_24, NUM_TEAMS_GER1, "ger1");
 	
 	
 	CURL *curl;
@@ -102,17 +102,19 @@ int main(void)
 		int currentRound, lastRound;
 		
 		currentRound = findCurrentRound(curl, &s, currentRoundAddr1ITA);
-		lastRound = findLastRound("ita.lg");
+		lastRound = findLastRound("ita1");
+		printf("last round %d", lastRound);
+		system("pause");
 		printf("Current round %d", currentRound);
 		processLeague(curl, &s, lastRound, currentRound-1, italy1);
 	
 		
 		currentRound = findCurrentRound(curl, &s, currentRoundAddr1ENG);
-		lastRound = findLastRound("eng.lg");
+		lastRound = findLastRound("eng1");
 		processLeague(curl, &s, lastRound, currentRound-1, england1);		
 
 		currentRound = findCurrentRound(curl, &s, currentRoundAddr1GER);
-		lastRound = findLastRound("ger.lg");
+		lastRound = findLastRound("ger1");
 		printf("Current round %d", currentRound);
 		processLeague(curl, &s, lastRound, currentRound-1, germany1);
 		
@@ -127,13 +129,14 @@ int main(void)
 }
 
 
-void initLeague(league* lig, char* currentRoundAddr, char* firstRoundAddr, int numTeams, char* fileName)
+void initLeague(league* lig, char* currentRoundAddr, char* firstRoundAddr, int numTeams, char* subdir)
 {
 	lig->numOfTeams = numTeams;
-	strcpy(lig->filename, fileName);
+	strcpy(lig->subdir, subdir);
 	lig->firstRoundAddr = firstRoundAddr;
 	lig->currentRoundAddr = currentRoundAddr;
 	lig->teams = malloc((sizeof(team))*(numTeams));
+	lig->roundsPlayed = 0;
 }
 
 #ifdef LEAGUE_INIT_TEST

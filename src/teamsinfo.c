@@ -254,3 +254,45 @@ void printTeamsStats(league* lig)
 
 	}
 }
+
+void saveTeamsStats(league* lig)
+{
+	int i;
+	FILE* fp;
+	char str[30] = "../DATA/";
+	strcat(str, lig->subdir);
+	strcat(str, "/stats.lg");
+	fp = fopen(str, "w");
+	fprintf(fp, "%d\n", lig->roundsPlayed);
+	for(i = 0; i < lig->numOfTeams; i++)
+	{
+		fprintf(fp, "%s \n", lig->teams[i].name);
+		fprintf(fp, "WH %d WG %d DH %d DG %d LH %d LG %d\n", lig->teams[i].wonAsHost, lig->teams[i].wonAsGuest,
+		 lig->teams[i].drawAsHost,lig->teams[i].drawAsGuest, lig->teams[i].lostAsHost, lig->teams[i].lostAsGuest);
+	}
+	fclose(fp);
+	
+}
+
+void saveRoundResults(pair* allRoundPairs, league* lig)
+{
+	FILE* fp;
+	char str[254] = "../DATA/";
+	strcat(str, lig->subdir);
+	strcat(str, "/results.lg");
+	fp = fopen(str, "a");
+	if(fp == NULL)
+	{
+		perror("Error opening file");
+    return;
+	}
+	fprintf(fp, "%d\n", lig->roundsPlayed);
+	int i = 0;
+	for(i = 0; i < allRoundPairs[0].numPairsFoundInRound; i++)
+	{
+		fprintf(fp, "%s %s %s %s\n", allRoundPairs[i].homeTeam, allRoundPairs[i].awayTeam, allRoundPairs[i].result, allRoundPairs[i].halftimeResult);
+		
+	}
+	fprintf(fp, "_________________________________________________\n\n");
+	fclose(fp);
+}

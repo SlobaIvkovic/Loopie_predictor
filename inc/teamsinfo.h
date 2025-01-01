@@ -13,5 +13,7 @@ void updateLegacyStats(team* tim, char* halftime, char* result, int hostIndex, i
 void updateWinsLosses(team* tim, char ft1, char ft2, int hostIndex, int guestIndex);
 void updateGoalsStats(team* tim, char ft1, char ft2, int hostIndex, int guestIndex);
 void printTeamsStats(league* lig);
+void saveTeamsStats(league* lig);
+void saveRoundResults(pair* allRoundPairs, league* lig);
 
 #endif

@@ -74,8 +74,9 @@ struct league
 {
 	char* firstRoundAddr;
 	char* currentRoundAddr;
-	char filename[7];
+	char  subdir[7];
 	int   numOfTeams;
+	int   roundsPlayed;
 	team* teams;
 };
 
