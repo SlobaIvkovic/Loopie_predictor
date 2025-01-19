@@ -17,6 +17,7 @@ int processLeague(CURL* curl, chunk* s, int startRound, int endRound, league* li
 	
 	while(startRound < endRound)
 	{
+		changeRoundAddress(lig->firstRoundAddr, startRound);
 		// we need a new one for every round, it holds results temporarly before it is written to a file
 		// and can be discarded anytime if the round process was unsucesfull without writting corupt data to the file
 		allRoundPairs = malloc(sizeof(pair) * (lig->numOfTeams/2));
@@ -56,7 +57,7 @@ int processLeague(CURL* curl, chunk* s, int startRound, int endRound, league* li
 		free(allRoundPairs);
 	
 		startRound++;
-		changeRoundAddress(lig->firstRoundAddr, startRound);
+		
 	}
 	printTeamsStats(lig);
 	

@@ -52,7 +52,7 @@ char leagueAddress1POR23[] = "https://int.soccerway.com/a/block_competition_matc
 
 void initLeague(league* lig, char* currentRoundAddr, char* firstRoundAddr, int numTeams, char* subdir);
 
-int main(void)
+int main(int argc, char* argv[])
 {
 	/* Not necessarry anymore since team pointer is now part of league struct but I'll leave it here
 	 commented as a reference and reminder on team struct
@@ -101,22 +101,31 @@ int main(void)
 		
 		int currentRound, lastRound;
 		
-		currentRound = findCurrentRound(curl, &s, currentRoundAddr1ITA);
-		lastRound = findLastRound("ita1");
-		printf("last round %d", lastRound);
-		system("pause");
-		printf("Current round %d", currentRound);
-		processLeague(curl, &s, lastRound, currentRound-1, italy1);
+		if(strcmp(argv[1], "ita1") == 0)
+		{
+			currentRound = findCurrentRound(curl, &s, currentRoundAddr1ITA);
+			lastRound = findLastRound("ita1");
+			printf("last round %d", lastRound);
+			system("pause");
+			printf("Current round %d", currentRound);
+			processLeague(curl, &s, lastRound, currentRound-1, italy1);
+		}
 	
-		
-		currentRound = findCurrentRound(curl, &s, currentRoundAddr1ENG);
-		lastRound = findLastRound("eng1");
-		processLeague(curl, &s, lastRound, currentRound-1, england1);		
+		if(strcmp(argv[1], "eng1") == 0)
+		{
+			currentRound = findCurrentRound(curl, &s, currentRoundAddr1ENG);
+			lastRound = findLastRound("eng1");
+			processLeague(curl, &s, lastRound, currentRound-1, england1);
+			
+		}		
 
-		currentRound = findCurrentRound(curl, &s, currentRoundAddr1GER);
-		lastRound = findLastRound("ger1");
-		printf("Current round %d", currentRound);
-		processLeague(curl, &s, lastRound, currentRound-1, germany1);
+		if(strcmp(argv[1], "ger1") == 0)
+		{
+			currentRound = findCurrentRound(curl, &s, currentRoundAddr1GER);
+			lastRound = findLastRound("ger1");
+			printf("Current round %d", currentRound);
+			processLeague(curl, &s, lastRound, currentRound-1, germany1);
+		}
 		
 		
     	curl_easy_cleanup(curl);
