@@ -30,8 +30,8 @@ int processLeague(CURL* curl, chunk* s, int startRound, int endRound, league* li
 		processOneRound(curl, s, lig, allRoundPairs);
 		lig->roundsPlayed++;
 	
-		// Ako je celo kolo uspešno obraðeno rezultate iz matrice upisujemo u fajl
-		// Mora postojati mehanizam da se verifikuje uspešna obrada kola
+		// Ako je celo kolo uspe?no obra?eno rezultate iz matrice upisujemo u fajl
+		// Mora postojati mehanizam da se verifikuje uspe?na obrada kola
 	
 		// Ovde imam niz sa svim timovima, ako je prva runda, dodati svakom timu ime i inicijalizovati parametre
 		if(startRound == 0)

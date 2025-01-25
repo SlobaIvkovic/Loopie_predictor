@@ -11,27 +11,48 @@
 #include "inc/updates.h"
 
 // Addreses of the first round
-char leagueAddress1ITA24[] = "https://int.soccerway.com/a/block_competition_matches_summary?block_id=page_competition_1_block_competition_matches_summary_10&callback_params=%7B%22page%22%3A15%2C%22block_service_id%22%3A%22competition_summary_block_competitionmatchessummary%22%2C%22round_id%22%3A82869%2C%22outgroup%22%3Afalse%2C%22view%22%3A1%2C%22competition_id%22%3A13%7D&action=changePage&params=%7B%22page%22%3A0%7D";
-char leagueAddress1ENG24[] = "https://int.soccerway.com/a/block_competition_matches_summary?block_id=page_competition_1_block_competition_matches_summary_10&callback_params=%7B%22page%22%3A14%2C%22block_service_id%22%3A%22competition_summary_block_competitionmatchessummary%22%2C%22round_id%22%3A81780%2C%22outgroup%22%3Afalse%2C%22view%22%3A1%2C%22competition_id%22%3A8%7D&action=changePage&params=%7B%22page%22%3A0%7D";
-char leagueAddress1GER24[] = "https://int.soccerway.com/a/block_competition_matches_summary?block_id=page_competition_1_block_competition_matches_summary_10&callback_params=%7B%22page%22%3A12%2C%22block_service_id%22%3A%22competition_summary_block_competitionmatchessummary%22%2C%22round_id%22%3A81840%2C%22outgroup%22%3Afalse%2C%22view%22%3A1%2C%22competition_id%22%3A9%7D&action=changePage&params=%7B%22page%22%3A0%7D";
+char leagueAddressITA_1_24[] = "https://int.soccerway.com/a/block_competition_matches_summary?block_id=page_competition_1_block_competition_matches_summary_10&callback_params=%7B%22page%22%3A15%2C%22block_service_id%22%3A%22competition_summary_block_competitionmatchessummary%22%2C%22round_id%22%3A82869%2C%22outgroup%22%3Afalse%2C%22view%22%3A1%2C%22competition_id%22%3A13%7D&action=changePage&params=%7B%22page%22%3A0%7D";
+char leagueAddressITA_2_24[] = "https://int.soccerway.com/a/block_competition_matches_summary?block_id=page_competition_1_block_competition_matches_summary_10&callback_params=%7B%22page%22%3A19%2C%22block_service_id%22%3A%22competition_summary_block_competitionmatchessummary%22%2C%22round_id%22%3A82971%2C%22outgroup%22%3Afalse%2C%22view%22%3A1%2C%22competition_id%22%3A14%7D&action=changePage&params=%7B%22page%22%3A0%7D";
+
+//////////////////////////////////////////////////////////
+char leagueAddressENG_1_24[] = "https://int.soccerway.com/a/block_competition_matches_summary?block_id=page_competition_1_block_competition_matches_summary_10&callback_params=%7B%22page%22%3A14%2C%22block_service_id%22%3A%22competition_summary_block_competitionmatchessummary%22%2C%22round_id%22%3A81780%2C%22outgroup%22%3Afalse%2C%22view%22%3A1%2C%22competition_id%22%3A8%7D&action=changePage&params=%7B%22page%22%3A0%7D";
+
+//////////////////////////////////////////////////////
+char leagueAddressGER_1_24[] = "https://int.soccerway.com/a/block_competition_matches_summary?block_id=page_competition_1_block_competition_matches_summary_10&callback_params=%7B%22page%22%3A12%2C%22block_service_id%22%3A%22competition_summary_block_competitionmatchessummary%22%2C%22round_id%22%3A81840%2C%22outgroup%22%3Afalse%2C%22view%22%3A1%2C%22competition_id%22%3A9%7D&action=changePage&params=%7B%22page%22%3A0%7D";
 
 
 // Addresses of the current round
-char currentRoundAddr1ITA[] = "https://int.soccerway.com/national/italy/serie-a/20242025/regular-season/r82869/";
-char currentRoundAddr1ENG[] = "https://int.soccerway.com/national/england/premier-league/20242025/regular-season/r81780/";
-char currentRoundAddr1GER[] = "https://int.soccerway.com/national/germany/bundesliga/20242025/regular-season/r81840/";
+char currentRoundAddrITA_1_24[] = "https://int.soccerway.com/national/italy/serie-a/20242025/regular-season/r82869/";
+char currentRoundAddrITA_2_24[] = "https://int.soccerway.com/national/italy/serie-b/20242025/regular-season/r82971/";
 
-#define CURRENT_ROUND_ADDR_ITA1 currentRoundAddr1ITA
-#define CURRENT_ROUND_ADDR_ENG1 currentRoundAddr1ENG
-#define CURRENT_ROUND_ADDR_GER1 currentRoundAddr1GER
+char currentRoundAddrENG_1_24[] = "https://int.soccerway.com/national/england/premier-league/20242025/regular-season/r81780/";
+char currentRoundAddrGER_1_24[] = "https://int.soccerway.com/national/germany/bundesliga/20242025/regular-season/r81840/";
 
-#define FIRST_ROUND_ADDR_ITA1_24     leagueAddress1ITA24
-#define NUM_TEAMS_ITA1              20
-#define FIRST_ROUND_ADDR_ENG1_24    leagueAddress1ENG24
-#define NUM_TEAMS_ENG1              20
-#define FIRST_ROUND_ADDR_GER1_24     leagueAddress1GER24
-#define NUM_TEAMS_GER1              18
 
+
+#define CURRENT_ROUND_ADDR_ITA_1_24 currentRoundAddrITA_1_24
+#define CURRENT_ROUND_ADDR_ITA_2_24 currentRoundAddrITA_2_24
+
+
+#define CURRENT_ROUND_ADDR_ENG_1_24 currentRoundAddrENG_1_24
+#define CURRENT_ROUND_ADDR_GER_1_24 currentRoundAddrGER_1_24
+
+
+//////
+#define FIRST_ROUND_ADDR_ITA_1_24       leagueAddressITA_1_24
+#define NUM_TEAMS_ITA_1_24              20
+
+#define FIRST_ROUND_ADDR_ENG_1_24       leagueAddressENG_1_24
+#define NUM_TEAMS_ENG_1_24              20
+
+#define FIRST_ROUND_ADDR_GER_1_24       leagueAddressGER_1_24
+#define NUM_TEAMS_GER_1_24              18
+
+
+// ita dva first ruond address
+#define FIRST_ROUND_ADDR_ITA_2_24       leagueAddressITA_2_24
+#define NUM_TEAMS_ITA_2_24              20
+/************************************************************************************************************************************************/
 
 char leagueAddress1ENG23[] = "https://int.soccerway.com/a/block_competition_matches_summary?block_id=page_competition_1_block_competition_matches_summary_10&callback_params=%7B%22page%22%3A37%2C%22block_service_id%22%3A%22competition_summary_block_competitionmatchessummary%22%2C%22round_id%22%3A76443%2C%22outgroup%22%3Afalse%2C%22view%22%3A1%2C%22competition_id%22%3A8%7D&action=changePage&params=%7B%22page%22%3A0%7D";
 char leagueAddress1GER23[] = "https://int.soccerway.com/a/block_competition_matches_summary?block_id=page_competition_1_block_competition_matches_summary_10&callback_params=%7B%22page%22%3A33%2C%22block_service_id%22%3A%22competition_summary_block_competitionmatchessummary%22%2C%22round_id%22%3A76158%2C%22outgroup%22%3Afalse%2C%22view%22%3A1%2C%22competition_id%22%3A9%7D&action=changePage&params=%7B%22page%22%3A0%7D";
@@ -48,6 +69,8 @@ char leagueAddress1POR23[] = "https://int.soccerway.com/a/block_competition_matc
 #define SPAIN_LEAGUE1_23_ADR	    leagueAddress1ESP23
 #define NETHERLANDS_LEAGUE1_23_ADR  leagueAddress1NED23
 #define PORTUGAL_LEAGUE1_23_ADR		leagueAddress1POR23
+
+/*****************************************************************************************************************************************************/
 
 
 void initLeague(league* lig, char* currentRoundAddr, char* firstRoundAddr, int numTeams, char* subdir);
@@ -66,14 +89,23 @@ int main(int argc, char* argv[])
 	*/
 	
 	// Printf AVALIABLE LEAGUES, this is for the gui
+	setbuf(stdout, NULL);
+	printf("=======================|========================\n");
+	printf("Hello from the Loopie_predictor backand\n");
+	printf("=======================|========================\n");
+	
 	
 	league* italy1   = malloc(sizeof(league));
+	league* italy2   = malloc(sizeof(league));
+	
 	league* england1 = malloc(sizeof(league));
 	league* germany1 = malloc(sizeof(league));
 	
-	initLeague(italy1, CURRENT_ROUND_ADDR_ITA1, FIRST_ROUND_ADDR_ITA1_24, NUM_TEAMS_ITA1, "ita1");
-	initLeague(england1, CURRENT_ROUND_ADDR_ENG1, FIRST_ROUND_ADDR_ENG1_24, NUM_TEAMS_ENG1, "eng1");
-	initLeague(germany1, CURRENT_ROUND_ADDR_GER1, FIRST_ROUND_ADDR_GER1_24, NUM_TEAMS_GER1, "ger1");
+	initLeague(italy1, CURRENT_ROUND_ADDR_ITA_1_24, FIRST_ROUND_ADDR_ITA_1_24, NUM_TEAMS_ITA_1_24, "ita1");
+	initLeague(italy2, CURRENT_ROUND_ADDR_ITA_2_24, FIRST_ROUND_ADDR_ITA_2_24, NUM_TEAMS_ITA_2_24, "ita2");
+	
+	initLeague(england1, CURRENT_ROUND_ADDR_ENG_1_24, FIRST_ROUND_ADDR_ENG_1_24, NUM_TEAMS_ENG_1_24, "eng1");
+	initLeague(germany1, CURRENT_ROUND_ADDR_GER_1_24, FIRST_ROUND_ADDR_GER_1_24, NUM_TEAMS_GER_1_24, "ger1");
 	
 	
 	CURL *curl;
@@ -101,19 +133,45 @@ int main(int argc, char* argv[])
 		
 		int currentRound, lastRound;
 		
+		if(strcmp(argv[1], "guiita1") == 0)
+		{
+			currentRound = findCurrentRound(curl, &s, currentRoundAddrITA_1_24);
+			lastRound = findLastRound("ita1");
+			processLeague(curl, &s, lastRound, currentRound, italy1);
+		}
+		if(strcmp(argv[1], "guiita2") == 0)
+		{
+			currentRound = findCurrentRound(curl, &s, currentRoundAddrITA_1_24);
+			lastRound = findLastRound("ita2");
+			processLeague(curl, &s, lastRound, currentRound, italy2);
+		}
+		
+		
+		
+		if(strcmp(argv[1], "guiger1") == 0)
+		{
+			processLeague(curl, &s, 0, 10, germany1);
+		}
+		if(strcmp(argv[1], "guieng1") == 0)
+		{
+			processLeague(curl, &s, 0, 10, england1);
+		}
+		
+		
 		if(strcmp(argv[1], "ita1") == 0)
 		{
-			currentRound = findCurrentRound(curl, &s, currentRoundAddr1ITA);
+			currentRound = findCurrentRound(curl, &s, currentRoundAddrITA_1_24);
 			lastRound = findLastRound("ita1");
 			printf("last round %d", lastRound);
-			system("pause");
 			printf("Current round %d", currentRound);
 			processLeague(curl, &s, lastRound, currentRound-1, italy1);
+			printf("League Processed");
+			system("pause");
 		}
 	
 		if(strcmp(argv[1], "eng1") == 0)
 		{
-			currentRound = findCurrentRound(curl, &s, currentRoundAddr1ENG);
+			currentRound = findCurrentRound(curl, &s, currentRoundAddrENG_1_24);
 			lastRound = findLastRound("eng1");
 			processLeague(curl, &s, lastRound, currentRound-1, england1);
 			
@@ -121,7 +179,7 @@ int main(int argc, char* argv[])
 
 		if(strcmp(argv[1], "ger1") == 0)
 		{
-			currentRound = findCurrentRound(curl, &s, currentRoundAddr1GER);
+			currentRound = findCurrentRound(curl, &s, currentRoundAddrGER_1_24);
 			lastRound = findLastRound("ger1");
 			printf("Current round %d", currentRound);
 			processLeague(curl, &s, lastRound, currentRound-1, germany1);
