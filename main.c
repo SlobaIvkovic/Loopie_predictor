@@ -10,6 +10,8 @@
 
 #include "inc/updates.h"
 
+#include "inc/teamsinfo.h"
+
 // Addreses of the first round
 char leagueAddressITA_1_24[] = "https://int.soccerway.com/a/block_competition_matches_summary?block_id=page_competition_1_block_competition_matches_summary_10&callback_params=%7B%22page%22%3A15%2C%22block_service_id%22%3A%22competition_summary_block_competitionmatchessummary%22%2C%22round_id%22%3A82869%2C%22outgroup%22%3Afalse%2C%22view%22%3A1%2C%22competition_id%22%3A13%7D&action=changePage&params=%7B%22page%22%3A0%7D";
 char leagueAddressITA_2_24[] = "https://int.soccerway.com/a/block_competition_matches_summary?block_id=page_competition_1_block_competition_matches_summary_10&callback_params=%7B%22page%22%3A19%2C%22block_service_id%22%3A%22competition_summary_block_competitionmatchessummary%22%2C%22round_id%22%3A82971%2C%22outgroup%22%3Afalse%2C%22view%22%3A1%2C%22competition_id%22%3A14%7D&action=changePage&params=%7B%22page%22%3A0%7D";
@@ -157,6 +159,14 @@ int main(int argc, char* argv[])
 			processLeague(curl, &s, 0, 10, england1);
 		}
 		
+		if(strcmp(argv[1], "it1") == 0)
+		{
+			// I need teamnames list initialized for this
+			// problem 2 fgets swallows \n character
+			
+			
+			loadTeams(italy1, "ita1");
+		}
 		
 		if(strcmp(argv[1], "ita1") == 0)
 		{
@@ -164,6 +174,12 @@ int main(int argc, char* argv[])
 			lastRound = findLastRound("ita1");
 			printf("last round %d", lastRound);
 			printf("Current round %d", currentRound);
+
+			// TESTING ONLY
+			currentRound = 3;
+			lastRound = 0;
+			//
+			
 			processLeague(curl, &s, lastRound, currentRound-1, italy1);
 			printf("League Processed");
 			system("pause");
@@ -204,6 +220,8 @@ void initLeague(league* lig, char* currentRoundAddr, char* firstRoundAddr, int n
 	lig->currentRoundAddr = currentRoundAddr;
 	lig->teams = malloc((sizeof(team))*(numTeams));
 	lig->roundsPlayed = 0;
+	
+	
 }
 
 #ifdef LEAGUE_INIT_TEST

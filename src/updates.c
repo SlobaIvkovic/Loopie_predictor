@@ -76,7 +76,7 @@ int findLastRound(char* subdir)
 // 	CHECK FILE INTEGRITY HERE IF EVERYTHING OK, LOAD THE TEAMS WITH THE LAST STATS SAVED			
 			
 			fscanf(fp, "%d", &lr);
-			printf("sTIGo %d", lr);
+
 			return lr;
 			
 			// Read stats here
@@ -100,3 +100,4 @@ int findLastRound(char* subdir)
 	
 	
 }
+

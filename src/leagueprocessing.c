@@ -38,6 +38,7 @@ int processLeague(CURL* curl, chunk* s, int startRound, int endRound, league* li
 		{
 			initAllTeams(lig, allRoundPairs);
 //			printNames(lig);
+			saveNames(lig);
 		}
 
 

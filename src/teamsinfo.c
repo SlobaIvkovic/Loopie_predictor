@@ -11,6 +11,8 @@ malo verovatno ali moguce, onda lista timova nije dobro
 inicijalizovana
 */////////////////////////
 
+
+
 int initAllTeams(league* lig, pair* allPairs)
 {
 	initAllTeamsNames(lig, allPairs);
@@ -81,6 +83,113 @@ void printNames(league* lig)
 	{
 		printf("%s\n", lig->teams[i++].name);
 	}
+}
+
+void saveNames(league* lig)
+{
+	int i = 0;
+	char dir[50] = "../DATA/";
+	strcat(dir, lig->subdir);
+	strcat(dir, "/teamsnames.lg");
+	FILE* fp = fopen(dir, "w");
+	
+	while(i < lig->numOfTeams)
+	{
+		fprintf(fp, "%s\n", lig->teams[i++].name);
+	}
+	fclose(fp);
+}
+
+int loadTeams(league* lig, char* subdir)
+{
+	int aux, aux2, aux3;
+	char aux1[70] = "a";
+	int i = 0;
+	int j = 0;
+	
+	//Possibly check the existance of the folder first, make some sort of double check
+	char nameBuff[50];
+	char statsLine[200];
+	
+	char str[50] = "../DATA/";
+	strcat(str, subdir);
+	strcat(str,"/stats.lg");
+	// check if the file is present
+	FILE* fp = fopen(str, "r");
+	if(fp == NULL)
+	{
+		printf("Cant open file\n");
+		// if not, initialize team stats to 0
+//		initAllTeamsStats(lig);
+		return 0;
+		
+	}
+	else
+	{
+		printf("Reading stats\n");
+		// Compare team name for all teams with the every line in the stats.lg file
+		// for i < lig->numOfTeams
+		
+		fgets(nameBuff, 50, fp); // This one swallows total round played in the league, rest are just plain stats
+		
+			while(!feof(fp))
+			{
+				fgets(nameBuff, sizeof(nameBuff), fp);
+			//	fscanf(fp, "%s", nameBuff);
+				
+				while(nameBuff[j] != '\n')
+				{
+					lig->teams[i].name[j] = nameBuff[j];
+					j++;
+				}
+				lig->teams[i].name[j] = '\0';
+				j = 0;
+				printf(">>%s<<\n", lig->teams[i].name);
+
+
+//fscanf(fp,"%s %d %s %d", aux1, &aux, aux1, &aux);
+//fscanf(fp,"%*s %d %*s %d %*s %d %*s %d %*s %d %*s %d", &aux, &aux, &aux, &aux, &aux, &aux);
+
+//fscanf(fp,"%*s %d %*s %d %*s %d", &aux, &aux2, &aux3);
+//printf("|%d %d %d|\n", aux, aux2, aux3);
+				
+			
+/*				fscanf(fp, "%*s %d %*s %d %*s %d %*s %d %*s %d %*s %d",
+				&lig->teams[i].wonAsHost, &lig->teams[i].wonAsGuest, &lig->teams[i].drawAsHost,
+				&lig->teams[i].drawAsGuest, &lig->teams[i].lostAsHost, &lig->teams[i].lostAsGuest);
+				
+				printf("| %d  %d  %d  %d  %d  %d|\n", 
+				lig->teams[i].wonAsHost, lig->teams[i].wonAsGuest, lig->teams[i].drawAsHost,
+				lig->teams[i].drawAsGuest, lig->teams[i].lostAsHost, lig->teams[i].lostAsGuest);*/
+				
+				
+				fscanf(fp, "%*s %hu %*s %hu %*s %hu %*s %hu %*s %hu %*s %hu", &lig->teams[i].wonAsHost, &lig->teams[i].wonAsGuest,
+													                          &lig->teams[i].drawAsHost, &lig->teams[i].drawAsGuest,
+													                          &lig->teams[i].lostAsHost, &lig->teams[i].lostAsGuest);
+
+				
+				printf("|%hu %hu %hu %hu %hu %hu|\n", lig->teams[i].wonAsHost, lig->teams[i].wonAsGuest,
+										  lig->teams[i].drawAsHost, lig->teams[i].drawAsGuest,
+										  lig->teams[i].lostAsHost, lig->teams[i].lostAsGuest);
+				
+				
+				
+				fgets(nameBuff, 50, fp); // swallow new line
+				
+				i++;
+				if(i == lig->numOfTeams)
+				break;
+				
+			}
+
+		fclose(fp);
+		return 0;
+		
+	}
+		
+	
+	// if the file is present read line by line until the team name is found
+	// when found read in one by one stat 
 }
 
 void updateTeamsStats(league* lig, pair* allRoundPairs)
@@ -266,7 +375,7 @@ void saveTeamsStats(league* lig)
 	fprintf(fp, "%d\n", lig->roundsPlayed);
 	for(i = 0; i < lig->numOfTeams; i++)
 	{
-		fprintf(fp, "%s \n", lig->teams[i].name);
+		fprintf(fp, "%s\n", lig->teams[i].name);
 		fprintf(fp, "WH %d WG %d DH %d DG %d LH %d LG %d\n", lig->teams[i].wonAsHost, lig->teams[i].wonAsGuest,
 		 lig->teams[i].drawAsHost,lig->teams[i].drawAsGuest, lig->teams[i].lostAsHost, lig->teams[i].lostAsGuest);
 	}
