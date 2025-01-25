@@ -25,16 +25,16 @@ struct team
 	int htAverage;
 	int numGamesScoCon;
 	
-	int htScoresAtLeastOne;
+	int htScoresAtLeastOne;        //
 	float htScoresAtLeastOnePCT;
-	int htConceedesAtLeastOne;
+	int htConceedesAtLeastOne;     //
 	
-	int numAtLeastOne;
-	int moreInFirst;
-	int twoPlusTotal;
-	int twoPlusAsHost;
-	int twoPlusAsGuest;
-	int onePlusTwoPlus;
+	int numAtLeastOne;            // 
+	int moreInFirst;               //
+	int twoPlusTotal;             //
+	int twoPlusAsHost;             //
+	int twoPlusAsGuest;            //
+	int onePlusTwoPlus;            //
 	float onePlusTwoPlusPCT;
 	
 	int inefficientGames;
@@ -66,6 +66,7 @@ struct team
 	unsigned short zeroToTwoAsGuest;
 	unsigned short zeroToTwoTotal;
 	
+	//Add zeroToOne and that is it for now
 };
 
 typedef struct team team;
