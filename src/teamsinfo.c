@@ -162,19 +162,38 @@ int loadTeams(league* lig, char* subdir)
 				lig->teams[i].wonAsHost, lig->teams[i].wonAsGuest, lig->teams[i].drawAsHost,
 				lig->teams[i].drawAsGuest, lig->teams[i].lostAsHost, lig->teams[i].lostAsGuest);*/
 				
+				fscanf(fp, "%*s %hu %*s %hu", &lig->teams[i].playedAsHost, &lig->teams[i].playedAsGuest);
 				
 				fscanf(fp, "%*s %hu %*s %hu %*s %hu %*s %hu %*s %hu %*s %hu", &lig->teams[i].wonAsHost, &lig->teams[i].wonAsGuest,
 													                          &lig->teams[i].drawAsHost, &lig->teams[i].drawAsGuest,
 													                          &lig->teams[i].lostAsHost, &lig->teams[i].lostAsGuest);
+													                          
+				fscanf(fp, "%*s %hu %*s %hu %*s %hu %*s %hu %*s %hu %*s %hu", &lig->teams[i].GGAsHost, &lig->teams[i].GGAsGuest,
+		                                                                      &lig->teams[i].threePlusAsHost, &lig->teams[i].threePlusAsGuest,
+																              &lig->teams[i].zeroToTwoAsHost, &lig->teams[i].zeroToTwoAsGuest);
+																  
+				fscanf(fp, "%*s %hu %*s %hu %*s %hu %*s %hu %*s %hu", &lig->teams[i].numAtLeastOne, &lig->teams[i].moreInFirst,
+		                                                              &lig->teams[i].twoPlusAsHost, &lig->teams[i].twoPlusAsGuest,
+																      &lig->teams[i].onePlusTwoPlus);
+																	  
+				fgets(nameBuff, 50, fp); // swallow new line													  												  									                          
 
+
+				printf("|%hu %hu|\n", lig->teams[i].playedAsHost, lig->teams[i].playedAsGuest);
 				
 				printf("|%hu %hu %hu %hu %hu %hu|\n", lig->teams[i].wonAsHost, lig->teams[i].wonAsGuest,
 										  lig->teams[i].drawAsHost, lig->teams[i].drawAsGuest,
 										  lig->teams[i].lostAsHost, lig->teams[i].lostAsGuest);
 				
+				printf("|%hu %hu %hu %hu %hu %hu|\n", lig->teams[i].GGAsHost, lig->teams[i].GGAsGuest,
+		                                              lig->teams[i].threePlusAsHost, lig->teams[i].threePlusAsGuest,
+													  lig->teams[i].zeroToTwoAsHost, lig->teams[i].zeroToTwoAsGuest);
+													  
+				printf("|%hu %hu %hu %hu %hu|\n", lig->teams[i].numAtLeastOne, lig->teams[i].moreInFirst,
+		                                          lig->teams[i].twoPlusAsHost, lig->teams[i].twoPlusAsGuest,
+											      lig->teams[i].onePlusTwoPlus);									  
 				
 				
-				fgets(nameBuff, 50, fp); // swallow new line
 				
 				i++;
 				if(i == lig->numOfTeams)
@@ -375,9 +394,26 @@ void saveTeamsStats(league* lig)
 	fprintf(fp, "%d\n", lig->roundsPlayed);
 	for(i = 0; i < lig->numOfTeams; i++)
 	{
+		//
 		fprintf(fp, "%s\n", lig->teams[i].name);
-		fprintf(fp, "WH %d WG %d DH %d DG %d LH %d LG %d\n", lig->teams[i].wonAsHost, lig->teams[i].wonAsGuest,
+		
+		// Plyed Games 
+		fprintf(fp, "Ph %d Pg %d ", lig->teams[i].playedAsHost, lig->teams[i].playedAsGuest);
+		
+		// Game Outcome Stats
+		fprintf(fp, "Wh %d Wg %d Dh %d Dg %d Lh %d Lg %d ", lig->teams[i].wonAsHost, lig->teams[i].wonAsGuest,
 		 lig->teams[i].drawAsHost,lig->teams[i].drawAsGuest, lig->teams[i].lostAsHost, lig->teams[i].lostAsGuest);
+		 
+		// Goal Stats
+		 fprintf(fp, "GGh %d GGg %d 3+h %d 3+g %d 02h %d 02g %d ", lig->teams[i].GGAsHost, lig->teams[i].GGAsGuest,
+		                                                          lig->teams[i].threePlusAsHost, lig->teams[i].threePlusAsGuest,
+																  lig->teams[i].zeroToTwoAsHost, lig->teams[i].zeroToTwoAsGuest);
+																  
+		// Legacy Stats														  
+	    fprintf(fp, "ht1+ %d I>II %d ht2+H %d ht2+g %d 1+2+ %d\n", lig->teams[i].numAtLeastOne, lig->teams[i].moreInFirst,
+		                                                          lig->teams[i].twoPlusAsHost, lig->teams[i].twoPlusAsGuest,
+																  lig->teams[i].onePlusTwoPlus);															  
+		 
 	}
 	fclose(fp);
 	

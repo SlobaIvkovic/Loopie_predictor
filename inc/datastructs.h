@@ -21,25 +21,34 @@ struct team
 	int playedAsHost;
 	int playedAsGuest;
 	
-	int htScoredConceeded;
-	int htAverage;
-	int numGamesScoCon;
+	/****************************************************************************************************************************************
 	
-	int htScoresAtLeastOne;        //
+	* LEGACY STATS
+	
+	****************************************************************************************************************************************/
+	 
+	int htScoredConceeded;        // not implemented in previous season legacy first ever version of the program, will be replaced with htGG later
+	int htAverage;                // can be calculated at runtime not implemented in the previousSeason
+	int numGamesScoCon;           // this one will be transformed into GGht not implemented in the previousSeason
+	
+	int htScoresAtLeastOne;       //
 	float htScoresAtLeastOnePCT;
-	int htConceedesAtLeastOne;     //
+	int htConceedesAtLeastOne;    //
 	
 	int numAtLeastOne;            // 
-	int moreInFirst;               //
+	int moreInFirst;              //
 	int twoPlusTotal;             //
-	int twoPlusAsHost;             //
-	int twoPlusAsGuest;            //
-	int onePlusTwoPlus;            //
+	int twoPlusAsHost;            //
+	int twoPlusAsGuest;           //
+	int onePlusTwoPlus;           //
 	float onePlusTwoPlusPCT;
 	
-	int inefficientGames;
+	int inefficientGames;         // not implemented in the previous season program, I beleive I wanted it to resemble 0-0 games
+	
 	
 	int mfInd;                     // index associated with games played with more goals in the first half
+	/*******************************************************************************************************************************************/
+	
 	
 	// New variables after refactor
 	unsigned short wonAsHost;
