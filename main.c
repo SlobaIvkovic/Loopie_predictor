@@ -77,6 +77,9 @@ char leagueAddress1POR23[] = "https://int.soccerway.com/a/block_competition_matc
 
 void initLeague(league* lig, char* currentRoundAddr, char* firstRoundAddr, int numTeams, char* subdir);
 
+int lupdates(curlAndChunkPtrs* curlAndChunk, int* lastProcessedRound, int* lastRoundPlayed, char* addr, char* subdir);
+void showTeamsStats(league* lig);
+
 int main(int argc, char* argv[])
 {
 	/* Not necessarry anymore since team pointer is now part of league struct but I'll leave it here
@@ -133,73 +136,109 @@ int main(int argc, char* argv[])
     	curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
 #endif    
 		
-		int currentRound, lastRound;
+		curlAndChunkPtrs curlAndChunk;
+	
+		curlAndChunk.curl = curl;
+		curlAndChunk.s = &s;
+		
+		//int currentRound, lastRound;
+		//
+		int lastProcessedRound, lastPlayedRound;
 		
 		if(strcmp(argv[1], "guiita1") == 0)
 		{
-			currentRound = findCurrentRound(curl, &s, currentRoundAddrITA_1_24);
-			lastRound = findLastRound("ita1");
-			processLeague(curl, &s, lastRound, currentRound, italy1);
+			lastProcessedRound = findLastRound("ita1");
+			lastPlayedRound = findCurrentRound(curl, &s, currentRoundAddrITA_1_24);
+			processLeague(curl, &s, lastProcessedRound, lastPlayedRound, italy1);
 		}
 		if(strcmp(argv[1], "guiita2") == 0)
 		{
-			currentRound = findCurrentRound(curl, &s, currentRoundAddrITA_1_24);
-			lastRound = findLastRound("ita2");
-			processLeague(curl, &s, lastRound, currentRound, italy2);
+			lastProcessedRound = findLastRound("ita2");
+			lastPlayedRound = findCurrentRound(curl, &s, currentRoundAddrITA_1_24);
+			processLeague(curl, &s, lastProcessedRound, lastPlayedRound, italy2);
 		}
 		
 		
-		
-		if(strcmp(argv[1], "guiger1") == 0)
+	
+		int roundsToProcess;
+		if(strcmp(argv[1], "ligupdates") == 0)
 		{
-			processLeague(curl, &s, 0, 10, germany1);
-		}
-		if(strcmp(argv[1], "guieng1") == 0)
-		{
-			processLeague(curl, &s, 0, 10, england1);
-		}
-		
-		if(strcmp(argv[1], "it1") == 0)
-		{
-			// I need teamnames list initialized for this
-			// problem 2 fgets swallows \n character
 			
-			
-			loadTeams(italy1, "ita1");
+			if(strcmp(argv[2], "ita1") == 0)
+			{
+				roundsToProcess = lupdates(&curlAndChunk, &lastProcessedRound, &lastPlayedRound, currentRoundAddrITA_1_24, "ita1");
+				printf("%d Rounds to process", roundsToProcess);
+				
+			}
 		}
 		
-		if(strcmp(argv[1], "ita1") == 0)
+		int statsAvailable;
+		if(strcmp(argv[1], "ligstats") == 0)
+		{	
+			statsAvailable = loadTeams(italy1, "ita1");
+			if(statsAvailable)
+			{
+				showTeamsStats(italy1);
+			}
+			else
+			{
+				printf("No data available yet for this League\n");
+			}
+		}
+		
+		if(strcmp(argv[1], "ligprocess") == 0)
 		{
-			currentRound = findCurrentRound(curl, &s, currentRoundAddrITA_1_24);
-			lastRound = findLastRound("ita1");
-			printf("last round %d", lastRound);
-			printf("Current round %d", currentRound);
+		//	currentRound = findCurrentRound(curl, &s, currentRoundAddrITA_1_24);
+		//	lastRound = findLastRound("ita1");
+			
+			roundsToProcess = lupdates(&curlAndChunk, &lastProcessedRound, &lastPlayedRound, currentRoundAddrITA_1_24, "ita1");
+		
 
-			// TESTING ONLY
-			currentRound = 3;
-			lastRound = 0;
 			//
+			if(lastProcessedRound == 0)
+			{
+				printf("No data available, processing league from round 1 to round %d\n", lastPlayedRound-1);
+			}
+			else if(lastProcessedRound < lastPlayedRound - 1)
+			{
+				printf("Processing league from round %d to round %d\n", lastProcessedRound+1, lastPlayedRound-1);
+				statsAvailable = loadTeams(italy1, "ita1");
+				if(statsAvailable)
+				{
+					printf("Stats before league update:\n");
+					showTeamsStats(italy1);
+				}
+				else
+				{
+					printf("No data available yet for this League\n");
+				}
+				
+				
+			}
+			else
+			{
+				printf("League stats are up to date. Stats will be shown\n");
+				statsAvailable = loadTeams(italy1, "ita1");
+				if(statsAvailable)
+				{
+					printf("Stats:\n");
+					showTeamsStats(italy1);
+				}
+				else
+				{
+					printf("Stats Error ocured\n");
+				}
+			}
 			
-			processLeague(curl, &s, lastRound, currentRound-1, italy1);
-			printf("League Processed");
-			system("pause");
+				// TESTING ONLY
+		//	lastPlayedRound = 15;
+		
+		    // Process all rounds but the current one displayed on the site since it might not be finished yet hence -1
+			processLeague(curl, &s, lastProcessedRound, lastPlayedRound-1, italy1);
+			printf("League Processed\n");
+			showTeamsStats(italy1);
 		}
 	
-		if(strcmp(argv[1], "eng1") == 0)
-		{
-			currentRound = findCurrentRound(curl, &s, currentRoundAddrENG_1_24);
-			lastRound = findLastRound("eng1");
-			processLeague(curl, &s, lastRound, currentRound-1, england1);
-			
-		}		
-
-		if(strcmp(argv[1], "ger1") == 0)
-		{
-			currentRound = findCurrentRound(curl, &s, currentRoundAddrGER_1_24);
-			lastRound = findLastRound("ger1");
-			printf("Current round %d", currentRound);
-			processLeague(curl, &s, lastRound, currentRound-1, germany1);
-		}
 		
 		
     	curl_easy_cleanup(curl);
@@ -222,6 +261,44 @@ void initLeague(league* lig, char* currentRoundAddr, char* firstRoundAddr, int n
 	lig->roundsPlayed = 0;
 	
 	
+}
+
+int lupdates(curlAndChunkPtrs* curlAndChunk, int* lastProcessedRound, int* lastPlayedRound, char* addr, char* subdir)
+{
+	*lastProcessedRound = findLastRound("ita1");
+	*lastPlayedRound = findCurrentRound(curlAndChunk->curl, curlAndChunk->s, currentRoundAddrITA_1_24);
+	if(*lastProcessedRound == 0)
+	{
+		printf("No rounds has been processed so far\n");
+	}
+	else
+	{
+		printf("Last round processed: %d\n", *lastProcessedRound);
+	}
+	printf("Current league round: %d\n", *lastPlayedRound);
+	return lastPlayedRound - lastProcessedRound;
+}
+
+void showTeamsStats(league* lig)
+{
+	int i;
+	for(i = 0; i < lig->numOfTeams; i++)
+	{
+		printf(">>%s<<\n", lig->teams[i].name);
+		printf("|%hu %hu|\n", lig->teams[i].playedAsHost, lig->teams[i].playedAsGuest);
+				
+		printf("|%hu %hu %hu %hu %hu %hu|\n", lig->teams[i].wonAsHost, lig->teams[i].wonAsGuest,
+										  lig->teams[i].drawAsHost, lig->teams[i].drawAsGuest,
+										  lig->teams[i].lostAsHost, lig->teams[i].lostAsGuest);
+				
+		printf("|%hu %hu %hu %hu %hu %hu|\n", lig->teams[i].GGAsHost, lig->teams[i].GGAsGuest,
+		                                              lig->teams[i].threePlusAsHost, lig->teams[i].threePlusAsGuest,
+													  lig->teams[i].zeroToTwoAsHost, lig->teams[i].zeroToTwoAsGuest);
+													  
+		printf("|%hu %hu %hu %hu %hu|\n", lig->teams[i].numAtLeastOne, lig->teams[i].moreInFirst,
+		                                          lig->teams[i].twoPlusAsHost, lig->teams[i].twoPlusAsGuest,
+											      lig->teams[i].onePlusTwoPlus);	
+	}
 }
 
 #ifdef LEAGUE_INIT_TEST

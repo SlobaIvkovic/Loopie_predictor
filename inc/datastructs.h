@@ -1,6 +1,8 @@
 #ifndef TEAM_H
 #define TEAM_H
 
+#include <curl/curl.h>
+
 #define TEAMS_LIST_MAX_SIZE 28
 
 
@@ -11,6 +13,14 @@ struct chunk {
 
 
 typedef struct chunk chunk;
+
+struct curlChunkPointer
+{
+	CURL* curl;
+	chunk* s;
+};
+
+typedef struct curlChunkPointer curlAndChunkPtrs;
 
 struct team
 {

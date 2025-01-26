@@ -38,6 +38,7 @@ int processLeague(CURL* curl, chunk* s, int startRound, int endRound, league* li
 		{
 			initAllTeams(lig, allRoundPairs);
 //			printNames(lig);
+            // Informative file containing the names of all league members teams 
 			saveNames(lig);
 		}
 
@@ -60,7 +61,8 @@ int processLeague(CURL* curl, chunk* s, int startRound, int endRound, league* li
 		startRound++;
 		
 	}
-	printTeamsStats(lig);
+//  Used for debuging	
+//	printTeamsStats(lig);
 	
 		
 }

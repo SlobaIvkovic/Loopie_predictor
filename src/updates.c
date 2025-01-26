@@ -69,7 +69,7 @@ int findLastRound(char* subdir)
 			fp = fopen(str, "r");
 			if(fp == NULL)
 			{
-				printf("Error opening file %s", str);
+				printf("Error opening file %s\n", str);
 				return 0;
 			}
 			

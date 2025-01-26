@@ -118,7 +118,7 @@ int loadTeams(league* lig, char* subdir)
 	FILE* fp = fopen(str, "r");
 	if(fp == NULL)
 	{
-		printf("Cant open file\n");
+		printf("Stats file for this league does not exist or can't be opened\n");
 		// if not, initialize team stats to 0
 //		initAllTeamsStats(lig);
 		return 0;
@@ -127,10 +127,9 @@ int loadTeams(league* lig, char* subdir)
 	else
 	{
 		printf("Reading stats\n");
-		// Compare team name for all teams with the every line in the stats.lg file
-		// for i < lig->numOfTeams
 		
-		fgets(nameBuff, 50, fp); // This one swallows total round played in the league, rest are just plain stats
+		fscanf(fp,"%d", &lig->roundsPlayed);
+		fgets(nameBuff, 50, fp); // Swallows the new line
 		
 			while(!feof(fp))
 			{
@@ -144,23 +143,10 @@ int loadTeams(league* lig, char* subdir)
 				}
 				lig->teams[i].name[j] = '\0';
 				j = 0;
-				printf(">>%s<<\n", lig->teams[i].name);
+			//	printf(">>%s<<\n", lig->teams[i].name);
 
 
-//fscanf(fp,"%s %d %s %d", aux1, &aux, aux1, &aux);
-//fscanf(fp,"%*s %d %*s %d %*s %d %*s %d %*s %d %*s %d", &aux, &aux, &aux, &aux, &aux, &aux);
 
-//fscanf(fp,"%*s %d %*s %d %*s %d", &aux, &aux2, &aux3);
-//printf("|%d %d %d|\n", aux, aux2, aux3);
-				
-			
-/*				fscanf(fp, "%*s %d %*s %d %*s %d %*s %d %*s %d %*s %d",
-				&lig->teams[i].wonAsHost, &lig->teams[i].wonAsGuest, &lig->teams[i].drawAsHost,
-				&lig->teams[i].drawAsGuest, &lig->teams[i].lostAsHost, &lig->teams[i].lostAsGuest);
-				
-				printf("| %d  %d  %d  %d  %d  %d|\n", 
-				lig->teams[i].wonAsHost, lig->teams[i].wonAsGuest, lig->teams[i].drawAsHost,
-				lig->teams[i].drawAsGuest, lig->teams[i].lostAsHost, lig->teams[i].lostAsGuest);*/
 				
 				fscanf(fp, "%*s %hu %*s %hu", &lig->teams[i].playedAsHost, &lig->teams[i].playedAsGuest);
 				
@@ -179,7 +165,8 @@ int loadTeams(league* lig, char* subdir)
 				fgets(nameBuff, 50, fp); // swallow new line													  												  									                          
 
 
-				printf("|%hu %hu|\n", lig->teams[i].playedAsHost, lig->teams[i].playedAsGuest);
+//Testing
+/*				printf("|%hu %hu|\n", lig->teams[i].playedAsHost, lig->teams[i].playedAsGuest);
 				
 				printf("|%hu %hu %hu %hu %hu %hu|\n", lig->teams[i].wonAsHost, lig->teams[i].wonAsGuest,
 										  lig->teams[i].drawAsHost, lig->teams[i].drawAsGuest,
@@ -192,7 +179,7 @@ int loadTeams(league* lig, char* subdir)
 				printf("|%hu %hu %hu %hu %hu|\n", lig->teams[i].numAtLeastOne, lig->teams[i].moreInFirst,
 		                                          lig->teams[i].twoPlusAsHost, lig->teams[i].twoPlusAsGuest,
 											      lig->teams[i].onePlusTwoPlus);									  
-				
+*/				
 				
 				
 				i++;
@@ -202,7 +189,7 @@ int loadTeams(league* lig, char* subdir)
 			}
 
 		fclose(fp);
-		return 0;
+		return 1;
 		
 	}
 		
