@@ -95,7 +95,7 @@ int main(int argc, char* argv[])
 	
 	// Printf AVALIABLE LEAGUES, this is for the gui
 	setbuf(stdout, NULL);
-	printf("=======================|========================\n");
+	printf("=======================|========================\n"); 
 	printf("Hello from the Loopie_predictor backand!\n");
 	printf("=======================|========================\n");
 	
